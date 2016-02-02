@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<meta title="VisualNovel" package="com.sample.visualnovel" version="1.0.0" company="Company Name" />
+	<app main="Main" path="bin" file="VisualNovel" />
+	
+	<source path="src" />
+	
+	<haxelib name="openfl" />
+	
+	<assets path="assets" />
+	
+</project>
