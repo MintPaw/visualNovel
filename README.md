@@ -1,7 +1,7 @@
 Notes:
 
 Commands:
-(label X) // X is label
+(label X) // X is label (you cannot call a label 'main')
 (goto X) // X is label
 (pause)
 (fadeIn)

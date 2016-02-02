@@ -11,10 +11,11 @@ class Story extends Sprite
 	function new() {
 		super();
 
-		var labelReg:EReg = new EReg("(label.*)", "ig");
+		var labelReg:EReg = new EReg("\\(label.*\\)", "ig");
 		storyText = Assets.getText("assets/story/main.txt");
 
-		var lableSplits:Array<String> = labelReg.split(storyText);
+		var labelSplits:Array<String> = labelReg.split(storyText);
+		trace(labelSplits.length + " labeled sections");
 
 	}
 
