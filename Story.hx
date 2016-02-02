@@ -15,13 +15,34 @@ class Story extends Sprite
 		storyText = Assets.getText("assets/story/main.txt");
 
 		commands.push({ type: "label", params: ["main"], startPos: 0, len: 0 });
-		var cs:Array<String> = reg.split(storyText);
 
-		for (i in 0...cs.length)
-		{
-			// if (
-			// var c:Command
-		}
+		reg.map(
+			storyText, function(r) {
+				var commandString:String = reg.matched(0);
+				if (commandString.charAt(1) == "(") return commandString;
+				if (commandString.charAt(1) == "/" && commandString.charAt(2) == "/")
+					return commandString;
+
+				var commandSubStrings:Array<String> = commandString.split(" ");
+				commandSubStrings.shift();
+
+				var c:Command = {};
+				c.type = commandSubStrings[0];
+				commandSubStrings.shift();
+				c.params = commandSubStrings;
+				// c.startPos = reg.matchedPos();
+
+				return commandString;
+			});
+		// for (i in 0...cs.length)
+		// {
+		// 	if (cs[i].charAt(i+1) == "(") continue;
+		// 	if (cs[i].charAt(i+1) == "/" && cs[i].charAt(i+2) == "/") continue;
+
+		// 	trace(cs[i]);
+		// 	var clets:Array<String> = [];
+		// 	var c:Command = {};
+		// }
 
 		Sys.exit(0);
 	}
@@ -46,8 +67,8 @@ class Story extends Sprite
 
 typedef Command = 
 {
-	var type:String;
-	var params:Array<String>;
-	var startPos:Int;
-	var len:Int;
+	?type:String,
+	?params:Array<String>,
+	?startPos:Int,
+	?len:Int
 }

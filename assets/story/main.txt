@@ -1,11 +1,25 @@
-This is some text
+This is some text.
 
-More text
+More text.
 (label l)
-The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long line
+The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long line.
 (pause)
 That was a pause, here are 2 more 
 (pause)
-and one more
+and one more.
 (pause)
-Done.
+This is a...... (clear) ......clear.
+(pause)
+This is a decision.
+(decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))
+
+(label sleep)
+You went to bed.
+(goto end)
+
+(label noSleep)
+You stayed up.
+(goto end)
+
+(label end)
+The end.
