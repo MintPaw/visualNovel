@@ -14,8 +14,14 @@ class Story extends Sprite
 		var reg:EReg = new EReg("\\(.*\\)", "ig");
 		storyText = Assets.getText("assets/story/main.txt");
 
-		var labelSplits:Array<String> = reg.split(storyText);
-		trace(labelSplits.length + " labeled sections");
+		commands.push({ type: "label", params: ["main"], startPos: 0, len: 0 });
+		var cs:Array<String> = reg.split(storyText);
+
+		for (i in 0...cs.length)
+		{
+			// if (
+			// var c:Command
+		}
 
 		Sys.exit(0);
 	}
@@ -43,6 +49,5 @@ typedef Command =
 	var type:String;
 	var params:Array<String>;
 	var startPos:Int;
-	var endPos:Int;
 	var len:Int;
 }
