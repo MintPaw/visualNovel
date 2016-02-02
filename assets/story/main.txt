@@ -2,4 +2,10 @@ This is some text
 
 More text
 (label l)
-The start of a label is above
+The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long line
+(pause)
+That was a pause, here are 2 more 
+(pause)
+and one more
+(pause)
+Done.

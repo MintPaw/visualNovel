@@ -6,17 +6,18 @@ import openfl.Assets;
 class Story extends Sprite
 {
 	var storyText:String;
-	var lables:Map<String, Int> = new Map();
+	var commands:Array<Command> = [];
 
 	function new() {
 		super();
 
-		var labelReg:EReg = new EReg("\\(label.*\\)", "ig");
+		var reg:EReg = new EReg("\\(.*\\)", "ig");
 		storyText = Assets.getText("assets/story/main.txt");
 
-		var labelSplits:Array<String> = labelReg.split(storyText);
+		var labelSplits:Array<String> = reg.split(storyText);
 		trace(labelSplits.length + " labeled sections");
 
+		Sys.exit(0);
 	}
 
 	function update():Void
@@ -35,4 +36,13 @@ class Story extends Sprite
 			}
 		}
 	}
+}
+
+typedef Command = 
+{
+	var type:String;
+	var params:Array<String>;
+	var startPos:Int;
+	var endPos:Int;
+	var len:Int;
 }
