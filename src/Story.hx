@@ -3,16 +3,21 @@ package ;
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.events.Event;
+import openfl.events.KeyboardEvent;
+import openfl.ui.Keyboard;
 import openfl.Assets;
 
 class Story extends Sprite
 {
-	var storyText:String;
-	var commands:Array<Command>;
 	var textField:TextField;
+
+	var commands:Array<Command>;
+
+	var storyText:String;
 	var currentChar:Int;
 	var nextWordTime:Int;
 	var lastTime:Int;
+	var paused:Bool;
 
 	function new() {
 		super();
@@ -23,11 +28,10 @@ class Story extends Sprite
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		{ // Get story
-			var reg:EReg = new EReg("\\(.*\\)", "ig");
 			storyText = Assets.getText("assets/story/main.txt");
-
 			commands = [{ type: "label", params: "main", pos: -1, len: 1 }];
 
+			var reg:EReg = new EReg("\\(.*\\)", "ig");
 			reg.map(
 					storyText, function(r) {
 						var commandString:String = reg.matched(0);
@@ -56,7 +60,7 @@ class Story extends Sprite
 			textField.height = stage.stageHeight * 0.25;
 			textField.x = sidePadding;
 			textField.y = stage.stageHeight - textField.height - botPadding;
-			textField.text = "test";
+			textField.text = "";
 			textField.border = true;
 			textField.wordWrap = true;
 			addChild(textField);
@@ -65,20 +69,25 @@ class Story extends Sprite
 		currentChar = 0;
 		lastTime = getTime();
 		stage.frameRate = 60;
+		paused = false;
 		addChild(new openfl.display.FPS());
 
 		addEventListener(Event.ENTER_FRAME, update);
+		stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+		stage.focus = stage;
 	}
 
 	function update(e:Event):Void {
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
 
-		if (nextWordTime <= 0) {
-			nextWordTime = 16;
-			updateStory();
-		} else {
-			nextWordTime -= elapsed;
+		if (!paused) {
+			if (nextWordTime <= 0) {
+				nextWordTime = 16;
+				updateStory();
+			} else {
+				nextWordTime -= elapsed;
+			}
 		}
 	}
 
@@ -100,6 +109,15 @@ class Story extends Sprite
 	function exec(c:Command):Void
 	{
 		trace('Running $c at line $currentChar');
+
+		if (c.type == "pause") {
+			paused = true;
+		}
+	}
+
+	function keyUp(e:KeyboardEvent):Void
+	{
+		if (e.keyCode == Keyboard.SPACE) paused = false;
 	}
 
 	function getTime():Int
