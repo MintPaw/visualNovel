@@ -113,7 +113,8 @@ class Story extends Sprite
 			paused = true;
 			clearNext = true;
 			for (i in 0...100) {
-				if (storyText.charAt(currentChar - i) == " ") {
+				if (storyText.charAt(currentChar - i) == " " ||
+						storyText.charAt(currentChar - i) == "\n") {
 					currentChar -= (i-1);
 					return;
 				}
@@ -130,6 +131,8 @@ class Story extends Sprite
 
 		if (c.type == "pause") {
 			paused = true;
+		} else if (c.type == "decision") {
+			// trace("d
 		}
 	}
 
