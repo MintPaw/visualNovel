@@ -30,7 +30,7 @@ class Story extends Sprite
 
 		{ // Get story
 			storyText = Assets.getText("assets/story/main.txt");
-			commands = [{ type: "label", params: "main", pos: -1, len: 1 }];
+			commands = [{ type: "label", params: ["main"], pos: -1, len: 1 }];
 
 			var reg:EReg = new EReg("\\(.*\\)", "ig");
 			reg.map(
@@ -44,10 +44,22 @@ class Story extends Sprite
 						var commandSubStrings:Array<String> = commandString.split(" ");
 						var c:Command = {};
 						c.type = commandSubStrings.shift();
-						c.params = commandSubStrings.join(" ");
+						c.params = [commandSubStrings.join(" ")];
 						c.pos = reg.matchedPos().pos;
 						c.len = reg.matchedPos().len;
 						commands.push(c);
+
+						if (c.type == "decision")
+						{
+							var pCopy:String = c.params[0];
+							for (i in 0...99) {
+								var startCut:Int = pCopy.indexOf("(")+1;
+								var endCut:Int = pCopy.indexOf(")")-1;
+								c.params[i] = pCopy.substr(startCut, endCut);
+								pCopy = pCopy.substr(pCopy.indexOf("(", endCut), pCopy.length);
+								if (pCopy.length <= 2) break;
+							}
+						}
 
 						return commandString;
 					});
@@ -150,7 +162,7 @@ class Story extends Sprite
 typedef Command = 
 {
 	?type:String,
-	?params:String,
+	?params:Array<String>,
 	?pos:Int,
 	?len:Int
 }
