@@ -28,7 +28,6 @@ class Story extends Sprite
 							return commandString;
 
 						var commandSubStrings:Array<String> = commandString.split(" ");
-
 						var c:Command = {};
 						c.type = commandSubStrings.shift();
 						c.params = commandSubStrings.join(" ");
