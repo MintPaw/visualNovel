@@ -12,6 +12,7 @@ class Story extends Sprite
 	var textField:TextField;
 	var currentChar:Int;
 	var nextWordTime:Int;
+	var lastTime:Int;
 
 	function new() {
 		super();
@@ -59,19 +60,24 @@ class Story extends Sprite
 			textField.border = true;
 			addChild(textField);
 		}
-		addChild(new openfl.display.FPS());
 
 		currentChar = 0;
+		lastTime = getTime();
+		stage.frameRate = 60;
+		addChild(new openfl.display.FPS());
 
 		addEventListener(Event.ENTER_FRAME, update);
 	}
 
 	function update(e:Event):Void {
+		var elapsed:Int = getTime() - lastTime;
+		lastTime = getTime();
+
 		if (nextWordTime <= 0) {
 			nextWordTime = 16;
 			updateStory();
 		} else {
-			nextWordTime--;
+			nextWordTime -= elapsed;
 		}
 	}
 
@@ -83,10 +89,15 @@ class Story extends Sprite
 		}
 
 		var char:String = storyText.charAt(currentChar);
-		trace("Char: ", char, currentChar);
+		// trace(char, currentChar);
 
 		textField.text += char;
 		currentChar++;
+	}
+
+	function getTime():Int
+	{
+		return Std.int(haxe.Timer.stamp() * 1000);
 	}
 }
 
