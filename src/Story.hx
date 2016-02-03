@@ -58,6 +58,7 @@ class Story extends Sprite
 			textField.y = stage.stageHeight - textField.height - botPadding;
 			textField.text = "test";
 			textField.border = true;
+			textField.wordWrap = true;
 			addChild(textField);
 		}
 
@@ -92,12 +93,13 @@ class Story extends Sprite
 		var char:String = storyText.charAt(currentChar);
 		// trace(char, currentChar);
 
-		textField.text += char;
+		textField.appendText(char);
 		currentChar++;
 	}
 
 	function exec(c:Command):Void
 	{
+		trace('Running $c at line $currentChar');
 	}
 
 	function getTime():Int
