@@ -2,22 +2,29 @@ package ;
 
 import openfl.display.Sprite;
 import openfl.text.TextField;
+import openfl.events.Event;
 import openfl.Assets;
 
 class Story extends Sprite
 {
 	var storyText:String;
-	var commands:Array<Command> = [];
-	var textField:TextField = new TextField();
+	var commands:Array<Command>;
+	var textField:TextField;
 
 	function new() {
 		super();
+		addEventListener(Event.ADDED_TO_STAGE, init);
+	}
+
+	function init(e:Event):Void
+	{
+		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		{ // Get story
 			var reg:EReg = new EReg("\\(.*\\)", "ig");
 			storyText = Assets.getText("assets/story/main.txt");
 
-			commands.push({ type: "label", params: "main", startPos: 0, len: 0 });
+			commands = [{ type: "label", params: "main", startPos: 0, len: 0 }];
 
 			reg.map(
 					storyText, function(r) {
@@ -41,7 +48,18 @@ class Story extends Sprite
 			// for (c in commands) trace(c);
 		}
 
-		Sys.exit(0);
+		{ // Setup UI
+			var botPadding:Int = 30;
+			var sidePadding:Int = 30;
+			textField = new TextField();
+			textField.width = stage.stageWidth - (sidePadding * 2);
+			textField.height = stage.stageHeight * 0.25;
+			textField.x = sidePadding;
+			textField.y = stage.stageHeight - textField.height - botPadding;
+			textField.text = "test";
+			textField.border = true;
+			addChild(textField);
+		}
 	}
 
 	function update():Void
