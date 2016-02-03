@@ -85,6 +85,7 @@ class Story extends Sprite
 		for (c in commands) {
 			if (c.pos == currentChar) {
 				currentChar += c.len;
+				exec(c);
 			}
 		}
 
@@ -93,6 +94,10 @@ class Story extends Sprite
 
 		textField.text += char;
 		currentChar++;
+	}
+
+	function exec(c:Command):Void
+	{
 	}
 
 	function getTime():Int
