@@ -1,48 +1,46 @@
 package ;
 
 import openfl.display.Sprite;
+import openfl.text.TextField;
 import openfl.Assets;
 
 class Story extends Sprite
 {
 	var storyText:String;
 	var commands:Array<Command> = [];
+	var textField:TextField = new TextField();
 
 	function new() {
 		super();
 
-		var reg:EReg = new EReg("\\(.*\\)", "ig");
-		storyText = Assets.getText("assets/story/main.txt");
+		{ // Get story
+			var reg:EReg = new EReg("\\(.*\\)", "ig");
+			storyText = Assets.getText("assets/story/main.txt");
 
-		commands.push({ type: "label", params: ["main"], startPos: 0, len: 0 });
+			commands.push({ type: "label", params: "main", startPos: 0, len: 0 });
 
-		reg.map(
-			storyText, function(r) {
-				var commandString:String = reg.matched(0);
-				if (commandString.charAt(1) == "(") return commandString;
-				if (commandString.charAt(1) == "/" && commandString.charAt(2) == "/")
-					return commandString;
+			reg.map(
+					storyText, function(r) {
+						var commandString:String = reg.matched(0);
+						commandString = commandString.substring(1, commandString.length - 1);
+						if (commandString.charAt(1) == "(") return commandString;
+						if (commandString.charAt(1) == "/" && commandString.charAt(2) == "/")
+							return commandString;
 
-				var commandSubStrings:Array<String> = commandString.split(" ");
-				commandSubStrings.shift();
+						var commandSubStrings:Array<String> = commandString.split(" ");
 
-				var c:Command = {};
-				c.type = commandSubStrings[0];
-				commandSubStrings.shift();
-				c.params = commandSubStrings;
-				// c.startPos = reg.matchedPos();
+						var c:Command = {};
+						c.type = commandSubStrings.shift();
+						c.params = commandSubStrings.join(" ");
+						c.startPos = reg.matchedPos().pos;
+						c.len = reg.matchedPos().len;
+						commands.push(c);
 
-				return commandString;
-			});
-		// for (i in 0...cs.length)
-		// {
-		// 	if (cs[i].charAt(i+1) == "(") continue;
-		// 	if (cs[i].charAt(i+1) == "/" && cs[i].charAt(i+2) == "/") continue;
+						return commandString;
+					});
 
-		// 	trace(cs[i]);
-		// 	var clets:Array<String> = [];
-		// 	var c:Command = {};
-		// }
+			// for (c in commands) trace(c);
+		}
 
 		Sys.exit(0);
 	}
@@ -68,7 +66,7 @@ class Story extends Sprite
 typedef Command = 
 {
 	?type:String,
-	?params:Array<String>,
+	?params:String,
 	?startPos:Int,
 	?len:Int
 }
