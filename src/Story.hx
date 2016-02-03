@@ -1,6 +1,7 @@
 package ;
 
 import openfl.display.Sprite;
+import openfl.display.SimpleButton;
 import openfl.text.TextField;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
@@ -18,7 +19,10 @@ class Story extends Sprite
 	var nextWordTime:Int;
 	var lastTime:Int;
 	var paused:Bool;
+	var deciding:Bool;
 	var clearNext:Bool;
+
+	var decideForm:DecideForm;
 
 	function new() {
 		super();
@@ -66,6 +70,11 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
+			decideForm = {};
+			decideForm.sprite = new Sprite();
+			decideForm.buttons = [];
+			decideForm.texts = [];
+
 			var botPadding:Int = 30;
 			var sidePadding:Int = 30;
 			textField = new TextField();
@@ -83,6 +92,7 @@ class Story extends Sprite
 		lastTime = getTime();
 		stage.frameRate = 60;
 		paused = false;
+		deciding = false;
 		clearNext = false;
 		addChild(new openfl.display.FPS());
 
@@ -95,7 +105,7 @@ class Story extends Sprite
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
 
-		if (!paused) {
+		if (!paused && !deciding) {
 			if (nextWordTime <= 0) {
 				nextWordTime = 16;
 				updateStory();
@@ -144,7 +154,7 @@ class Story extends Sprite
 		if (c.type == "pause") {
 			paused = true;
 		} else if (c.type == "decision") {
-			// trace("d
+			deciding = true;
 		}
 	}
 
@@ -165,4 +175,11 @@ typedef Command =
 	?params:Array<String>,
 	?pos:Int,
 	?len:Int
+}
+
+typedef DecideForm = 
+{
+	?sprite:Sprite,
+	?buttons:Array<SimpleButton>,
+	?texts:Array<TextField>
 }
