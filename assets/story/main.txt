@@ -4,9 +4,9 @@ More text.
 (label l)
 The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long line.
 (pause)
-That was a pause, here are 2 more 
+That was a pause, here's another.
 (pause)
-and one more.
+This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text should still make sense.
 (pause)
 This is a...... (clear) ......clear.
 (pause)

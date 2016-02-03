@@ -18,6 +18,7 @@ class Story extends Sprite
 	var nextWordTime:Int;
 	var lastTime:Int;
 	var paused:Bool;
+	var clearNext:Bool;
 
 	function new() {
 		super();
@@ -70,6 +71,7 @@ class Story extends Sprite
 		lastTime = getTime();
 		stage.frameRate = 60;
 		paused = false;
+		clearNext = false;
 		addChild(new openfl.display.FPS());
 
 		addEventListener(Event.ENTER_FRAME, update);
@@ -92,6 +94,11 @@ class Story extends Sprite
 	}
 
 	function updateStory():Void {
+		if (clearNext) {
+			clearNext = false;
+			textField.text = "";
+		}
+
 		for (c in commands) {
 			if (c.pos == currentChar) {
 				currentChar += c.len;
@@ -101,6 +108,17 @@ class Story extends Sprite
 
 		var char:String = storyText.charAt(currentChar);
 		// trace(char, currentChar);
+
+		if (textField.maxScrollV > 1) {
+			paused = true;
+			clearNext = true;
+			for (i in 0...100) {
+				if (storyText.charAt(currentChar - i) == " ") {
+					currentChar -= (i-1);
+					return;
+				}
+			}
+		}
 
 		textField.appendText(char);
 		currentChar++;
