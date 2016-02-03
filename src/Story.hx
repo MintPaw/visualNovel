@@ -76,14 +76,14 @@ class Story extends Sprite
 	}
 
 	function updateStory():Void {
-		var char:String = storyText.charAt(currentChar);
-		trace("Char: ", char, currentChar);
-
 		for (c in commands) {
 			if (c.pos == currentChar) {
 				currentChar += c.len;
 			}
 		}
+
+		var char:String = storyText.charAt(currentChar);
+		trace("Char: ", char, currentChar);
 
 		textField.text += char;
 		currentChar++;
