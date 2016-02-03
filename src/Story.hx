@@ -10,21 +10,22 @@ class Story extends Sprite
 	var storyText:String;
 	var commands:Array<Command>;
 	var textField:TextField;
+	var currentChar:Int;
+	var nextWordTime:Int;
 
 	function new() {
 		super();
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
-	function init(e:Event):Void
-	{
+	function init(e:Event):Void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		{ // Get story
 			var reg:EReg = new EReg("\\(.*\\)", "ig");
 			storyText = Assets.getText("assets/story/main.txt");
 
-			commands = [{ type: "label", params: "main", startPos: 0, len: 0 }];
+			commands = [{ type: "label", params: "main", pos: -1, len: 1 }];
 
 			reg.map(
 					storyText, function(r) {
@@ -38,14 +39,12 @@ class Story extends Sprite
 						var c:Command = {};
 						c.type = commandSubStrings.shift();
 						c.params = commandSubStrings.join(" ");
-						c.startPos = reg.matchedPos().pos;
+						c.pos = reg.matchedPos().pos;
 						c.len = reg.matchedPos().len;
 						commands.push(c);
 
 						return commandString;
 					});
-
-			// for (c in commands) trace(c);
 		}
 
 		{ // Setup UI
@@ -60,23 +59,34 @@ class Story extends Sprite
 			textField.border = true;
 			addChild(textField);
 		}
+		addChild(new openfl.display.FPS());
+
+		currentChar = 0;
+
+		addEventListener(Event.ENTER_FRAME, update);
 	}
 
-	function update():Void
-	{
-		// Maybe I'll use regex. >_>
-		var skipChars:Int = 0;
-		for (i in 0...storyText.length) {
-			var c:String = storyText.charAt(i);
+	function update(e:Event):Void {
+		if (nextWordTime <= 0) {
+			nextWordTime = 16;
+			updateStory();
+		} else {
+			nextWordTime--;
+		}
+	}
 
-			if (skipChars > 0) {
-				skipChars--;
-			} else if (c == "/") {
-				skipChars = 1;
-			} else if (c == "(") {
-				// skipChars = exec(i);
+	function updateStory():Void {
+		var char:String = storyText.charAt(currentChar);
+		trace("Char: ", char, currentChar);
+
+		for (c in commands) {
+			if (c.pos == currentChar) {
+				currentChar += c.len;
 			}
 		}
+
+		textField.text += char;
+		currentChar++;
 	}
 }
 
@@ -84,6 +94,6 @@ typedef Command =
 {
 	?type:String,
 	?params:String,
-	?startPos:Int,
+	?pos:Int,
 	?len:Int
 }
