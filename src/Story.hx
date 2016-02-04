@@ -1,8 +1,9 @@
 package ;
 
 import openfl.display.Sprite;
-import openfl.display.Sprite;
 import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.geom.Rectangle;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
@@ -15,8 +16,11 @@ import openfl.Assets;
 class Story extends Sprite
 {
 	var textField:TextField;
+	var decideForm:DecideForm;
+	var continueButton:Button;
 
 	var commands:Array<Command>;
+	var buttons:Array<Button>;
 
 	var storyText:String;
 	var currentChar:Int;
@@ -25,8 +29,8 @@ class Story extends Sprite
 	var paused:Bool;
 	var deciding:Bool;
 	var clearNext:Bool;
+	var mouseDown:Bool;
 
-	var decideForm:DecideForm;
 
 	function new() {
 		super();
@@ -79,6 +83,17 @@ class Story extends Sprite
 			var sidePadding:Int = 30;
 			var innerPadding:Int = 20;
 
+			buttons = [];
+
+			continueButton = makeButton(
+				 "assets/img/buttonUp.png",
+				 "assets/img/buttonOver.png",
+				 "assets/img/buttonDown.png");
+			continueButton.bitmap.x = stage.stageWidth - continueButton.bitmap.width;
+			continueButton.bitmap.y = stage.stageHeight - continueButton.bitmap.height;
+			addChild(continueButton.bitmap);
+			buttons.push(continueButton);
+
 			decideForm = {};
 			decideForm.sprite = new Sprite();
 			decideForm.buttons = [];
@@ -98,11 +113,6 @@ class Story extends Sprite
 
 			for (i in 0...5)
 			{
-				// new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")),
-				// new Bitmap(Assets.getBitmapData("assets/img/buttonOver.png")),
-				// new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")),
-				// new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")));
-
 				var b:Sprite = new Sprite();
 				b.addChild(new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")));
 				b.width = stage.stageWidth - (sidePadding * 2);
@@ -143,14 +153,19 @@ class Story extends Sprite
 		paused = false;
 		deciding = false;
 		clearNext = false;
+		mouseDown = false;
 		addChild(new openfl.display.FPS());
 
 		addEventListener(Event.ENTER_FRAME, update);
-		stage.addEventListener(KeyboardEvent.KEY_UP, keyUp);
+		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
+		addEventListener(MouseEvent.MOUSE_DOWN, mDown);
+		addEventListener(MouseEvent.MOUSE_UP, mUp);
 		stage.focus = stage;
 	}
 
 	function update(e:Event):Void {
+		updateButtons(buttons);
+
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
 
@@ -253,14 +268,63 @@ class Story extends Sprite
 		}
 	}
 
-	function keyUp(e:KeyboardEvent):Void
-	{
+	function kUp(e:KeyboardEvent):Void {
 		if (e.keyCode == Keyboard.SPACE) paused = false;
 	}
 
-	function getTime():Int
-	{
+	function mDown(e:MouseEvent):Void {
+		mouseDown = true;
+	}
+
+	function mUp(e:MouseEvent):Void {
+		mouseDown = false;
+	}
+
+	function getTime():Int {
 		return Std.int(haxe.Timer.stamp() * 1000);
+	}
+
+	function makeButton(up:String, over:String, down:String):Button {
+		// I need the size
+		var up:BitmapData = Assets.getBitmapData(up);
+
+		var b:Button = {
+			bitmap: new Bitmap(new BitmapData(up.width, up.height)),
+			state: 0,
+			up: up,
+			over: Assets.getBitmapData(over),
+			down: Assets.getBitmapData(down)
+		};
+
+		b.bitmap.bitmapData.draw(b.up);
+
+		return b;
+	}
+
+	function updateButtons(buttons:Array<Button>):Void {
+		var mouseX:Int = Std.int(stage.mouseX);
+		var mouseY:Int = Std.int(stage.mouseY);
+
+		for (b in buttons) {
+			var bRect:Rectangle = b.bitmap.bitmapData.rect.clone();
+			bRect.x += b.bitmap.x;
+			bRect.y += b.bitmap.y;
+
+			if (bRect.contains(mouseX, mouseY)) {
+
+				if (mouseDown && b.state != 2) {
+					b.bitmap.bitmapData.draw(b.down);
+					b.state = 2;
+				} else if (!mouseDown && b.state != 1) {
+					b.bitmap.bitmapData.draw(b.over);
+					b.state = 1;
+				}
+
+			} else if (b.state != 0) {
+				b.bitmap.bitmapData.draw(b.up);
+				b.state = 0;
+			}
+		}
 	}
 }
 
@@ -278,4 +342,13 @@ typedef DecideForm =
 	?prompt:TextField,
 	?buttons:Array<Sprite>,
 	?texts:Array<TextField>
+}
+
+typedef Button =
+{
+	?bitmap:Bitmap,
+	?state:Int,
+	?up:BitmapData,
+	?over:BitmapData,
+	?down:BitmapData
 }
