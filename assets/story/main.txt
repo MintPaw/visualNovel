@@ -2,13 +2,13 @@ This is some text.
 
 More text.
 (label l)
-The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long line.
+The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long line. press space
 (pause)
-That was a pause, here's another.
+That was a pause, here's another. press space
 (pause)
-This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
+This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense. press space
 (pause)
-This is a...... (clear) ......clear.
+This is a......<not working> (clear) ......clear. press space
 (pause)
 This is a decision.
 (decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))

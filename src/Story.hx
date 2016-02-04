@@ -113,7 +113,6 @@ class Story extends Sprite
 
 				var t:TextField = new TextField();
 				t.defaultTextFormat = new TextFormat(null, 20);
-				t.border = true;
 				t.text = "This is a test";
 				t.autoSize = TextFieldAutoSize.CENTER;
 				t.x = b.x + (b.width - t.width) / 2;
@@ -218,7 +217,7 @@ class Story extends Sprite
 
 			var currentButtonIndex:Int = 0;
 			for (i in 1...c.params.length) {
-				if (i % 2 == 1) continue;
+				if (i % 2 == 0) continue;
 				decideForm.buttons[currentButtonIndex].visible = true;
 				decideForm.texts[currentButtonIndex].visible = true;
 				decideForm.texts[currentButtonIndex].text = c.params[i];
