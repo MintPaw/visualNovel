@@ -83,6 +83,14 @@ class Story extends Sprite
 			decideForm.buttons = [];
 			decideForm.texts = [];
 
+			decideForm.prompt = new TextField();
+			decideForm.prompt.defaultTextFormat = new TextFormat(null, 20);
+			decideForm.prompt.autoSize = TextFieldAutoSize.CENTER;
+			decideForm.prompt.width = stage.stageWidth;
+			decideForm.prompt.y = 0;
+			decideForm.prompt.text = "Test";
+			decideForm.sprite.addChild(decideForm.prompt);
+
 			var s = decideForm.sprite;
 			s.graphics.beginFill(0x000000, 0.25);
 			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
@@ -186,12 +194,15 @@ class Story extends Sprite
 
 	function exec(c:Command):Void
 	{
-		trace('Running $c at line $currentChar');
+		trace('Running $c');
 
 		if (c.type == "pause") {
 			paused = true;
 		} else if (c.type == "decision") {
 			deciding = true;
+
+			for (b in decideForm.buttons) b.visible = false;
+			for (t in decideForm.texts) t.visible = false;
 		}
 	}
 
@@ -217,6 +228,7 @@ typedef Command =
 typedef DecideForm = 
 {
 	?sprite:Sprite,
+	?prompt:TextField,
 	?buttons:Array<SimpleButton>,
 	?texts:Array<TextField>
 }
