@@ -1,13 +1,14 @@
 package ;
 
 import openfl.display.Sprite;
-import openfl.display.SimpleButton;
+import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.text.TextField;
 import openfl.text.TextFieldAutoSize;
 import openfl.text.TextFormat;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
+import openfl.events.MouseEvent;
 import openfl.ui.Keyboard;
 import openfl.Assets;
 
@@ -97,15 +98,18 @@ class Story extends Sprite
 
 			for (i in 0...5)
 			{
-				var b:SimpleButton = new SimpleButton( 
-						new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")),
-						new Bitmap(Assets.getBitmapData("assets/img/buttonOver.png")),
-						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")),
-						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")));
+				// new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")),
+				// new Bitmap(Assets.getBitmapData("assets/img/buttonOver.png")),
+				// new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")),
+				// new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")));
+
+				var b:Sprite = new Sprite();
+				b.addChild(new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")));
 				b.width = stage.stageWidth - (sidePadding * 2);
 				b.height = 60;
 				b.x = sidePadding;
 				b.y = topPadding + (b.height + innerPadding) * i;
+				b.addEventListener(MouseEvent.CLICK, decisionClicked);
 
 				var t:TextField = new TextField();
 				t.defaultTextFormat = new TextFormat(null, 20);
@@ -114,6 +118,7 @@ class Story extends Sprite
 				t.autoSize = TextFieldAutoSize.CENTER;
 				t.x = b.x + (b.width - t.width) / 2;
 				t.y = b.y + (b.height - t.height) / 2;
+				t.mouseEnabled = false;
 
 				decideForm.sprite.addChild(b);
 				decideForm.sprite.addChild(t);
@@ -201,8 +206,13 @@ class Story extends Sprite
 		} else if (c.type == "decision") {
 			deciding = true;
 
-			for (b in decideForm.buttons) b.visible = false;
-			for (t in decideForm.texts) t.visible = false;
+			for (b in decideForm.buttons) {
+				b.visible = false;
+			}
+
+			for (t in decideForm.texts) {
+				t.visible = false;
+			}
 
 			decideForm.prompt.text = c.params[0];
 
@@ -221,6 +231,25 @@ class Story extends Sprite
 				if (ci.params[0] == c.params[0]) {
 					currentChar = ci.pos;
 				}
+			}
+		}
+	}
+
+	function decisionClicked(e:MouseEvent):Void
+	{
+		var buttonIndex = decideForm.buttons.indexOf(e.currentTarget);
+		for (c in commands) {
+			if (c.pos + c.len + 1 == currentChar) {
+
+				var commandStrings:Array<String> = c.params[2 + buttonIndex * 2].split(" ");
+				var newC:Command = {};
+				newC.type = commandStrings[0];
+				newC.params = [commandStrings[1]];
+				newC.len = 0;
+
+				exec(newC);
+				deciding = false;
+				removeChild(decideForm.sprite);
 			}
 		}
 	}
@@ -248,6 +277,6 @@ typedef DecideForm =
 {
 	?sprite:Sprite,
 	?prompt:TextField,
-	?buttons:Array<SimpleButton>,
+	?buttons:Array<Sprite>,
 	?texts:Array<TextField>
 }
