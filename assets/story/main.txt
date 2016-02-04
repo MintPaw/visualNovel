@@ -1,4 +1,3 @@
-(goto d)
 This is some text.
 
 More text.
@@ -11,7 +10,6 @@ This text is too long to be shown at at once, there will have to be a break at o
 (pause)
 This is a...... (clear) ......clear.
 (pause)
-(label d)
 This is a decision.
 (decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))
 
