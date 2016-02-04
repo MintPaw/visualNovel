@@ -206,11 +206,21 @@ class Story extends Sprite
 
 			decideForm.prompt.text = c.params[0];
 
+			var currentButtonIndex:Int = 0;
 			for (i in 1...c.params.length) {
-				decideForm.buttons[i-1].visible = true;
-				decideForm.texts[i-1].visible = true;
-				decideForm.texts[i-1].text = c.params[i];
-				addChild(decideForm);
+				if (i % 2 == 1) continue;
+				decideForm.buttons[currentButtonIndex].visible = true;
+				decideForm.texts[currentButtonIndex].visible = true;
+				decideForm.texts[currentButtonIndex].text = c.params[i];
+				addChild(decideForm.sprite);
+				currentButtonIndex++;
+			}
+
+		} else if (c.type == "goto") {
+			for (ci in commands) {
+				if (ci.params[0] == c.params[0]) {
+					currentChar = ci.pos;
+				}
 			}
 		}
 	}
