@@ -203,6 +203,15 @@ class Story extends Sprite
 
 			for (b in decideForm.buttons) b.visible = false;
 			for (t in decideForm.texts) t.visible = false;
+
+			decideForm.prompt.text = c.params[0];
+
+			for (i in 1...c.params.length) {
+				decideForm.buttons[i-1].visible = true;
+				decideForm.texts[i-1].visible = true;
+				decideForm.texts[i-1].text = c.params[i];
+				addChild(decideForm);
+			}
 		}
 	}
 
