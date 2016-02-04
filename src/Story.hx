@@ -73,6 +73,7 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
+			var topPadding:Int = 30;
 			var botPadding:Int = 30;
 			var sidePadding:Int = 30;
 			var innerPadding:Int = 20;
@@ -82,6 +83,10 @@ class Story extends Sprite
 			decideForm.buttons = [];
 			decideForm.texts = [];
 
+			var s = decideForm.sprite;
+			s.graphics.beginFill(0x000000, 0.25);
+			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+
 			for (i in 0...5)
 			{
 				var b:SimpleButton = new SimpleButton( 
@@ -90,9 +95,9 @@ class Story extends Sprite
 						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")),
 						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")));
 				b.width = stage.stageWidth - (sidePadding * 2);
-				b.height = 70;
+				b.height = 60;
 				b.x = sidePadding;
-				b.y = 100 + (b.height + innerPadding) * i;
+				b.y = topPadding + (b.height + innerPadding) * i;
 
 				var t:TextField = new TextField();
 				t.defaultTextFormat = new TextFormat(null, 20);
@@ -108,8 +113,6 @@ class Story extends Sprite
 				decideForm.buttons.push(b);
 				decideForm.texts.push(t);
 			}
-
-			addChild(decideForm.sprite);
 
 			textField = new TextField();
 			textField.width = stage.stageWidth - (sidePadding * 2);
