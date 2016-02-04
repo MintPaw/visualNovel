@@ -91,6 +91,7 @@ class Story extends Sprite
 				 "assets/img/buttonDown.png");
 			continueButton.bitmap.x = stage.stageWidth - continueButton.bitmap.width;
 			continueButton.bitmap.y = stage.stageHeight - continueButton.bitmap.height;
+			continueButton.onClick = function() { paused = false; };
 			addChild(continueButton.bitmap);
 			buttons.push(continueButton);
 
@@ -164,7 +165,8 @@ class Story extends Sprite
 	}
 
 	function update(e:Event):Void {
-		updateButtons(buttons);
+		continueButton.bitmap.visible = paused;
+		updateButtons();
 
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
@@ -301,14 +303,13 @@ class Story extends Sprite
 		return b;
 	}
 
-	function updateButtons(buttons:Array<Button>):Void {
+	function updateButtons():Void {
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
 
 		for (b in buttons) {
 			var bRect:Rectangle = b.bitmap.bitmapData.rect.clone();
-			bRect.x += b.bitmap.x;
-			bRect.y += b.bitmap.y;
+			bRect.offset(b.bitmap.x, b.bitmap.y);
 
 			if (bRect.contains(mouseX, mouseY)) {
 
@@ -316,6 +317,7 @@ class Story extends Sprite
 					b.bitmap.bitmapData.draw(b.down);
 					b.state = 2;
 				} else if (!mouseDown && b.state != 1) {
+					if (b.state == 2) b.onClick();
 					b.bitmap.bitmapData.draw(b.over);
 					b.state = 1;
 				}
@@ -348,6 +350,7 @@ typedef Button =
 {
 	?bitmap:Bitmap,
 	?state:Int,
+	?onClick:Void -> Void,
 	?up:BitmapData,
 	?over:BitmapData,
 	?down:BitmapData
