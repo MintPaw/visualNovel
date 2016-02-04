@@ -2,7 +2,10 @@ package ;
 
 import openfl.display.Sprite;
 import openfl.display.SimpleButton;
+import openfl.display.Bitmap;
 import openfl.text.TextField;
+import openfl.text.TextFieldAutoSize;
+import openfl.text.TextFormat;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.ui.Keyboard;
@@ -70,13 +73,44 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
+			var botPadding:Int = 30;
+			var sidePadding:Int = 30;
+			var innerPadding:Int = 20;
+
 			decideForm = {};
 			decideForm.sprite = new Sprite();
 			decideForm.buttons = [];
 			decideForm.texts = [];
 
-			var botPadding:Int = 30;
-			var sidePadding:Int = 30;
+			for (i in 0...5)
+			{
+				var b:SimpleButton = new SimpleButton( 
+						new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")),
+						new Bitmap(Assets.getBitmapData("assets/img/buttonOver.png")),
+						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")),
+						new Bitmap(Assets.getBitmapData("assets/img/buttonDown.png")));
+				b.width = stage.stageWidth - (sidePadding * 2);
+				b.height = 70;
+				b.x = sidePadding;
+				b.y = 100 + (b.height + innerPadding) * i;
+
+				var t:TextField = new TextField();
+				t.defaultTextFormat = new TextFormat(null, 20);
+				t.border = true;
+				t.text = "This is a test";
+				t.autoSize = TextFieldAutoSize.CENTER;
+				t.x = b.x + (b.width - t.width) / 2;
+				t.y = b.y + (b.height - t.height) / 2;
+
+				decideForm.sprite.addChild(b);
+				decideForm.sprite.addChild(t);
+
+				decideForm.buttons.push(b);
+				decideForm.texts.push(t);
+			}
+
+			addChild(decideForm.sprite);
+
 			textField = new TextField();
 			textField.width = stage.stageWidth - (sidePadding * 2);
 			textField.height = stage.stageHeight * 0.25;
