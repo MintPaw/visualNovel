@@ -24,11 +24,14 @@ class Story extends Sprite
 
 	var storyText:String;
 	var currentChar:Int;
+
 	var nextWordTime:Int;
 	var lastTime:Int;
 	var paused:Bool;
 	var deciding:Bool;
 	var clearNext:Bool;
+	var speedUp:Bool;
+
 	var mouseDown:Bool;
 
 
@@ -165,6 +168,15 @@ class Story extends Sprite
 	}
 
 	function update(e:Event):Void {
+
+		while (speedUp) {
+			if (paused || deciding) {
+				speedUp = false;
+				break;
+			}
+			updateStory();
+		}
+
 		continueButton.bitmap.visible = paused;
 		updateButtons();
 
@@ -271,7 +283,9 @@ class Story extends Sprite
 	}
 
 	function kUp(e:KeyboardEvent):Void {
-		if (e.keyCode == Keyboard.SPACE) paused = false;
+		if (e.keyCode == Keyboard.SPACE) {
+			if (paused) paused = false else speedUp = true;
+		}
 	}
 
 	function mDown(e:MouseEvent):Void {
