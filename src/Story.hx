@@ -31,6 +31,7 @@ class Story extends Sprite
 	var deciding:Bool;
 	var clearNext:Bool;
 	var speedUp:Bool;
+	var done:Bool;
 
 	var mouseDown:Bool;
 
@@ -158,6 +159,7 @@ class Story extends Sprite
 		deciding = false;
 		clearNext = false;
 		mouseDown = false;
+		done = false;
 		addChild(new openfl.display.FPS());
 
 		addEventListener(Event.ENTER_FRAME, update);
@@ -170,7 +172,7 @@ class Story extends Sprite
 	function update(e:Event):Void {
 
 		while (speedUp) {
-			if (paused || deciding) {
+			if (paused || deciding || done) {
 				speedUp = false;
 				break;
 			}
@@ -223,6 +225,8 @@ class Story extends Sprite
 
 		textField.appendText(char);
 		currentChar++;
+
+		if (currentChar >= storyText.length) done = true;
 	}
 
 	function exec(c:Command):Void
