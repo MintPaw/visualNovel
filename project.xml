@@ -6,7 +6,6 @@
 	
 	<source path="src" />
 	
-	<haxeflag name="--macro" value="include('src/Button.pack')" />
 	<haxelib name="openfl" />
 	
 	<assets path="assets/img" rename="img" />

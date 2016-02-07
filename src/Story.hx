@@ -35,7 +35,6 @@ class Story extends Sprite
 
 	var mouseDown:Bool;
 
-
 	function new() {
 		super();
 		addEventListener(Event.ADDED_TO_STAGE, init);
