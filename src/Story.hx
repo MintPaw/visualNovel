@@ -18,6 +18,7 @@ class Story extends Sprite
 	var textField:TextField;
 	var decideForm:DecideForm;
 	var continueButton:Button;
+	var scene:Scene;
 
 	var commands:Array<Command>;
 	var buttons:Array<Button>;
@@ -81,6 +82,12 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
+			scene = {};
+			scene.sprite = new Sprite();
+			scene.bg = new Bitmap(Assets.getBitmapData("img/noBg.png"));
+			scene.sprite.addChild(scene.bg);
+			addChild(scene.sprite);
+
 			var topPadding:Int = 30;
 			var botPadding:Int = 30;
 			var sidePadding:Int = 30;
@@ -261,6 +268,10 @@ class Story extends Sprite
 					currentChar = ci.pos;
 				}
 			}
+		} else if (c.type == "changeBg") {
+			scene.oldBg = scene.bg;
+			scene.bg = new Bitmap(Assets.getBitmapData(c.params[0]));
+			scene.sprite.addChild(scene.bg);
 		}
 	}
 
@@ -369,4 +380,11 @@ typedef Button =
 	?up:BitmapData,
 	?over:BitmapData,
 	?down:BitmapData
+}
+
+typedef Scene =
+{
+	?sprite:Sprite,
+	?oldBg:Bitmap,
+	?bg:Bitmap
 }

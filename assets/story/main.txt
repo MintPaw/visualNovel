@@ -14,10 +14,12 @@ This is a decision.
 (decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))
 
 (label sleep)
+(changeBg img/blueBg.png)
 You went to bed.
 (goto end)
 
 (label noSleep)
+(changeBg img/redBg.png)
 You stayed up.
 (goto end)
 
