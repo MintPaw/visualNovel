@@ -9,6 +9,7 @@
 	<haxeflag name="--macro" value="include('src/Button.pack')" />
 	<haxelib name="openfl" />
 	
-	<assets path="assets" />
+	<assets path="assets/img" rename="img" />
+	<assets path="assets/story" rename="story" />
 	
 </project>

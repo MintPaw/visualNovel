@@ -45,7 +45,7 @@ class Story extends Sprite
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		{ // Get story
-			storyText = Assets.getText("assets/story/main.txt");
+			storyText = Assets.getText("story/main.txt");
 			commands = [{ type: "label", params: ["main"], pos: -1, len: 1 }];
 
 			var reg:EReg = new EReg("\\(.*\\)", "ig");
@@ -89,10 +89,8 @@ class Story extends Sprite
 
 			buttons = [];
 
-			continueButton = makeButton(
-				 "assets/img/buttonUp.png",
-				 "assets/img/buttonOver.png",
-				 "assets/img/buttonDown.png");
+			continueButton =
+				makeButton("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
 			continueButton.bitmap.x = stage.stageWidth - continueButton.bitmap.width;
 			continueButton.bitmap.y = stage.stageHeight - continueButton.bitmap.height;
 			continueButton.onClick = function() { paused = false; };
@@ -119,7 +117,7 @@ class Story extends Sprite
 			for (i in 0...5)
 			{
 				var b:Sprite = new Sprite();
-				b.addChild(new Bitmap(Assets.getBitmapData("assets/img/buttonUp.png")));
+				b.addChild(new Bitmap(Assets.getBitmapData("img/buttonUp.png")));
 				b.width = stage.stageWidth - (sidePadding * 2);
 				b.height = 60;
 				b.x = sidePadding;
