@@ -12,6 +12,7 @@ import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
 import openfl.ui.Keyboard;
 import openfl.Assets;
+import motion.Actuate;
 
 class Story extends Sprite
 {
@@ -271,7 +272,13 @@ class Story extends Sprite
 		} else if (c.type == "changeBg") {
 			scene.oldBg = scene.bg;
 			scene.bg = new Bitmap(Assets.getBitmapData(c.params[0]));
+			scene.bg.alpha = 0;
 			scene.sprite.addChild(scene.bg);
+
+			Actuate.tween(scene.bg, 2, { alpha: 1 }).onComplete(function() {
+				scene.sprite.removeChild(scene.oldBg);
+				scene.oldBg = null;
+			});
 		}
 	}
 
