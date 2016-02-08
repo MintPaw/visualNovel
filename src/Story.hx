@@ -234,8 +234,7 @@ class Story extends Sprite
 		if (currentChar >= storyText.length) done = true;
 	}
 
-	function exec(c:Command):Void
-	{
+	function exec(c:Command):Void {
 		trace('Running $c');
 
 		if (c.type == "pause") {
@@ -243,13 +242,8 @@ class Story extends Sprite
 		} else if (c.type == "decision") {
 			deciding = true;
 
-			for (b in decideForm.buttons) {
-				b.visible = false;
-			}
-
-			for (t in decideForm.texts) {
-				t.visible = false;
-			}
+			for (b in decideForm.buttons) b.visible = false;
+			for (t in decideForm.texts) t.visible = false;
 
 			decideForm.prompt.text = c.params[0];
 
