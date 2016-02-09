@@ -13,38 +13,36 @@ import openfl.events.MouseEvent;
 import openfl.ui.Keyboard;
 import openfl.Assets;
 import motion.Actuate;
-import F_Button;
-import F_Button.*;
 
 class Story extends Sprite
 {
-	var textField:TextField;
-	var decideForm:DecideForm;
-	var continueButton:Button;
-	var scene:Scene;
+	public static var mouseDown:Bool;
 
-	var commands:Array<Command>;
-	var buttons:Array<Button>;
+	public var textField:TextField;
+	public var decideForm:DecideForm;
+	public var continueButton:Button;
+	public var scene:Scene;
 
-	var storyText:String;
-	var currentChar:Int;
+	public var commands:Array<Command>;
+	public var buttons:Array<Button>;
 
-	var nextWordTime:Int;
-	var lastTime:Int;
-	var paused:Bool;
-	var deciding:Bool;
-	var clearNext:Bool;
-	var speedUp:Bool;
-	var done:Bool;
+	public var storyText:String;
+	public var currentChar:Int;
 
-	var mouseDown:Bool;
+	public var nextWordTime:Int;
+	public var lastTime:Int;
+	public var paused:Bool;
+	public var deciding:Bool;
+	public var clearNext:Bool;
+	public var speedUp:Bool;
+	public var done:Bool;
 
-	function new() {
+	public function new() {
 		super();
 		addEventListener(Event.ADDED_TO_STAGE, init);
 	}
 
-	function init(e:Event):Void {
+	public function init(e:Event):Void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
 		{ // Get story
@@ -99,11 +97,11 @@ class Story extends Sprite
 			buttons = [];
 
 			continueButton =
-				makeButton("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
-			continueButton.bitmap.x = stage.stageWidth - continueButton.bitmap.width;
-			continueButton.bitmap.y = stage.stageHeight - continueButton.bitmap.height;
+				new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
+			continueButton.x = stage.stageWidth - continueButton.width;
+			continueButton.y = stage.stageHeight - continueButton.height;
 			continueButton.onClick = function() { paused = false; };
-			addChild(continueButton.bitmap);
+			addChild(continueButton);
 			buttons.push(continueButton);
 
 			decideForm = {};
@@ -123,8 +121,7 @@ class Story extends Sprite
 			s.graphics.beginFill(0x000000, 0.25);
 			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 
-			for (i in 0...5)
-			{
+			for (i in 0...5) {
 				var b:Sprite = new Sprite();
 				b.addChild(new Bitmap(Assets.getBitmapData("img/buttonUp.png")));
 				b.width = stage.stageWidth - (sidePadding * 2);
@@ -176,8 +173,7 @@ class Story extends Sprite
 		stage.focus = stage;
 	}
 
-	function update(e:Event):Void {
-
+	public function update(e:Event):Void {
 		while (speedUp) {
 			if (paused || deciding || done) {
 				speedUp = false;
@@ -186,8 +182,8 @@ class Story extends Sprite
 			updateStory();
 		}
 
-		continueButton.bitmap.visible = paused;
-		updateButtons();
+		continueButton.visible = paused;
+		for (b in buttons) b.update();
 
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
@@ -202,7 +198,7 @@ class Story extends Sprite
 		}
 	}
 
-	function updateStory():Void {
+	public function updateStory():Void {
 		if (clearNext) {
 			clearNext = false;
 			textField.text = "";
@@ -236,7 +232,7 @@ class Story extends Sprite
 		if (currentChar >= storyText.length) done = true;
 	}
 
-	function exec(c:Command):Void {
+	public function exec(c:Command):Void {
 		trace('Running $c');
 
 		if (c.type == "pause") {
@@ -278,8 +274,7 @@ class Story extends Sprite
 		}
 	}
 
-	function decisionClicked(e:MouseEvent):Void
-	{
+	public function decisionClicked(e:MouseEvent):Void {
 		var buttonIndex = decideForm.buttons.indexOf(e.currentTarget);
 		for (c in commands) {
 			if (c.pos + c.len + 1 == currentChar) {
@@ -297,49 +292,24 @@ class Story extends Sprite
 		}
 	}
 
-	function kUp(e:KeyboardEvent):Void {
+	public function kUp(e:KeyboardEvent):Void {
 		if (e.keyCode == Keyboard.SPACE) {
 			if (paused) paused = false else speedUp = true;
 		}
 	}
 
-	function mDown(e:MouseEvent):Void {
+	public function mDown(e:MouseEvent):Void {
 		mouseDown = true;
 	}
 
-	function mUp(e:MouseEvent):Void {
+	public function mUp(e:MouseEvent):Void {
 		mouseDown = false;
 	}
 
-	function getTime():Int {
+	public function getTime():Int {
 		return Std.int(haxe.Timer.stamp() * 1000);
 	}
 
-	function updateButtons():Void {
-		var mouseX:Int = Std.int(stage.mouseX);
-		var mouseY:Int = Std.int(stage.mouseY);
-
-		for (b in buttons) {
-			var bRect:Rectangle = b.bitmap.bitmapData.rect.clone();
-			bRect.offset(b.bitmap.x, b.bitmap.y);
-
-			if (bRect.contains(mouseX, mouseY)) {
-
-				if (mouseDown && b.state != 2) {
-					b.bitmap.bitmapData.draw(b.down);
-					b.state = 2;
-				} else if (!mouseDown && b.state != 1) {
-					if (b.state == 2) b.onClick();
-					b.bitmap.bitmapData.draw(b.over);
-					b.state = 1;
-				}
-
-			} else if (b.state != 0) {
-				b.bitmap.bitmapData.draw(b.up);
-				b.state = 0;
-			}
-		}
-	}
 }
 
 typedef Command = 
