@@ -106,7 +106,6 @@ class Story extends Sprite
 			decideForm = {};
 			decideForm.sprite = new Sprite();
 			decideForm.buttons = [];
-			decideForm.texts = [];
 
 			decideForm.prompt = new TextField();
 			decideForm.prompt.defaultTextFormat = new TextFormat(null, 20);
@@ -121,28 +120,18 @@ class Story extends Sprite
 			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 
 			for (i in 0...5) {
-				var b:Button =
-					new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
+				var b:Button = new Button(
+						"img/buttonUp.png",
+						"img/buttonOver.png",
+						"img/buttonDown.png",
+						"<test button text>");
 				b.width = stage.stageWidth - (sidePadding * 2);
 				b.height = 60;
 				b.x = sidePadding;
 				b.y = topPadding + (b.height + innerPadding) * i;
 				b.onClick = decisionClicked.bind(i);
-
-				var t:TextField = new TextField();
-				t.defaultTextFormat = new TextFormat(null, 20);
-				t.text = "This is a test";
-				t.autoSize = TextFieldAutoSize.CENTER;
-				t.x = b.x + (b.width - t.width) / 2;
-				t.y = b.y + (b.height - t.height) / 2;
-				t.mouseEnabled = false;
-
 				decideForm.sprite.addChild(b);
-				decideForm.sprite.addChild(t);
-
 				decideForm.buttons.push(b);
-				decideForm.texts.push(t);
-
 				buttons.push(b);
 			}
 
@@ -242,7 +231,6 @@ class Story extends Sprite
 			deciding = true;
 
 			for (b in decideForm.buttons) b.visible = false;
-			for (t in decideForm.texts) t.visible = false;
 
 			decideForm.prompt.text = c.params[0];
 
@@ -250,8 +238,7 @@ class Story extends Sprite
 			for (i in 1...c.params.length) {
 				if (i % 2 == 0) continue;
 				decideForm.buttons[currentButtonIndex].visible = true;
-				decideForm.texts[currentButtonIndex].visible = true;
-				decideForm.texts[currentButtonIndex].text = c.params[i];
+				decideForm.buttons[currentButtonIndex].textField.text = c.params[i];
 				addChild(decideForm.sprite);
 				currentButtonIndex++;
 			}
@@ -324,8 +311,7 @@ typedef DecideForm =
 {
 	?sprite:Sprite,
 	?prompt:TextField,
-	?buttons:Array<Button>,
-	?texts:Array<TextField>
+	?buttons:Array<Button>
 }
 
 

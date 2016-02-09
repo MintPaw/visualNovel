@@ -41,14 +41,15 @@ class Button extends Sprite
 		textField.defaultTextFormat = new TextFormat(null, 20);
 		textField.text = text;
 		textField.autoSize = TextFieldAutoSize.CENTER;
-		textField.x = (width - textField.width) / 2;
-		textField.y = (height - textField.height) / 2;
 		textField.mouseEnabled = false;
 		addChild(textField);
 	}
 
 	public function update() {
 		if (stage == null) return;
+
+		textField.x = (width - textField.width) / 2;
+		textField.y = (height - textField.height) / 2;
 
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
