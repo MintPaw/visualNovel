@@ -13,6 +13,8 @@ import openfl.events.MouseEvent;
 import openfl.ui.Keyboard;
 import openfl.Assets;
 import motion.Actuate;
+import F_Button;
+import F_Button.*;
 
 class Story extends Sprite
 {
@@ -313,23 +315,6 @@ class Story extends Sprite
 		return Std.int(haxe.Timer.stamp() * 1000);
 	}
 
-	function makeButton(up:String, over:String, down:String):Button {
-		// I need the size
-		var up:BitmapData = Assets.getBitmapData(up);
-
-		var b:Button = {
-			bitmap: new Bitmap(new BitmapData(up.width, up.height)),
-			state: 0,
-			up: up,
-			over: Assets.getBitmapData(over),
-			down: Assets.getBitmapData(down)
-		};
-
-		b.bitmap.bitmapData.draw(b.up);
-
-		return b;
-	}
-
 	function updateButtons():Void {
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
@@ -373,15 +358,6 @@ typedef DecideForm =
 	?texts:Array<TextField>
 }
 
-typedef Button =
-{
-	?bitmap:Bitmap,
-	?state:Int,
-	?onClick:Void -> Void,
-	?up:BitmapData,
-	?over:BitmapData,
-	?down:BitmapData
-}
 
 typedef Scene =
 {
