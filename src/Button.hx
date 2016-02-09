@@ -27,6 +27,9 @@ class Button extends Bitmap
 	}
 
 	public function update() {
+		if (stage == null) return;
+		trace(onClick);
+
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
 
@@ -34,6 +37,7 @@ class Button extends Bitmap
 		bRect.offset(x, y);
 
 		if (bRect.contains(mouseX, mouseY)) {
+			trace("hover");
 
 			if (Story.mouseDown && state != 2) {
 				bitmapData.draw(down);

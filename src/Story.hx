@@ -66,8 +66,7 @@ class Story extends Sprite
 						c.len = reg.matchedPos().len;
 						commands.push(c);
 
-						if (c.type == "decision")
-						{
+						if (c.type == "decision") {
 							var pCopy:String = c.params[0];
 							for (i in 0...99) {
 								var startCut:Int = pCopy.indexOf("(")+1;
@@ -122,12 +121,13 @@ class Story extends Sprite
 			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
 
 			for (i in 0...5) {
-				var b:Sprite = new Sprite();
-				b.addChild(new Bitmap(Assets.getBitmapData("img/buttonUp.png")));
+				var b:Button =
+					new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
 				b.width = stage.stageWidth - (sidePadding * 2);
 				b.height = 60;
 				b.x = sidePadding;
 				b.y = topPadding + (b.height + innerPadding) * i;
+				// b.onClick = decisionClicked.bind(i);
 				b.addEventListener(MouseEvent.CLICK, decisionClicked);
 
 				var t:TextField = new TextField();
@@ -143,6 +143,8 @@ class Story extends Sprite
 
 				decideForm.buttons.push(b);
 				decideForm.texts.push(t);
+
+				buttons.push(b);
 			}
 
 			textField = new TextField();
@@ -274,8 +276,7 @@ class Story extends Sprite
 		}
 	}
 
-	public function decisionClicked(e:MouseEvent):Void {
-		var buttonIndex = decideForm.buttons.indexOf(e.currentTarget);
+	public function decisionClicked(buttonIndex:Int):Void {
 		for (c in commands) {
 			if (c.pos + c.len + 1 == currentChar) {
 
@@ -324,7 +325,7 @@ typedef DecideForm =
 {
 	?sprite:Sprite,
 	?prompt:TextField,
-	?buttons:Array<Sprite>,
+	?buttons:Array<Button>,
 	?texts:Array<TextField>
 }
 
