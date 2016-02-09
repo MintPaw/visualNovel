@@ -5,6 +5,8 @@ import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 import openfl.text.TextField;
+import openfl.text.TextFormat;
+import openfl.text.TextFieldAutoSize;
 import openfl.Assets;
 
 class Button extends Sprite
@@ -19,9 +21,12 @@ class Button extends Sprite
 
 	public var state:Int;
 
-	public function new(upPath:String, overPath:String, downPath:String) {
+	public function new(
+			upPath:String,
+			overPath:String,
+			downPath:String,
+			text:String = "") {
 		super();
-		// I need the size
 
 		state = 0;
 		up = Assets.getBitmapData(upPath);
@@ -31,6 +36,15 @@ class Button extends Sprite
 		bitmap = new Bitmap(new BitmapData(up.width, up.height));
 		bitmap.bitmapData.draw(up);
 		addChild(bitmap);
+
+		textField = new TextField();
+		textField.defaultTextFormat = new TextFormat(null, 20);
+		textField.text = text;
+		textField.autoSize = TextFieldAutoSize.CENTER;
+		textField.x = (width - textField.width) / 2;
+		textField.y = (height - textField.height) / 2;
+		textField.mouseEnabled = false;
+		addChild(textField);
 	}
 
 	public function update() {
@@ -55,5 +69,13 @@ class Button extends Sprite
 			bitmap.bitmapData.draw(up);
 			state = 0;
 		}
+	}
+
+	public override function set_width(v:Float):Float {
+		return bitmap.width = v;
+	}
+
+	public override function set_height(v:Float):Float {
+		return bitmap.height = v;
 	}
 }
