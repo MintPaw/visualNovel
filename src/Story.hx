@@ -19,12 +19,12 @@ class Story extends Sprite
 	public static var mouseDown:Bool;
 
 	public var textField:TextField;
+	public var titleField:TextField;
 	public var decideForm:DecideForm;
 	public var continueButton:Button;
 	public var scene:Scene;
 
 	public var commands:Array<Command>;
-	public var buttons:Array<Button>;
 
 	public var storyText:String;
 	public var currentChar:Int;
@@ -93,15 +93,12 @@ class Story extends Sprite
 			var sidePadding:Int = 30;
 			var innerPadding:Int = 20;
 
-			buttons = [];
-
 			continueButton =
 				new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
 			continueButton.x = stage.stageWidth - continueButton.width;
 			continueButton.y = stage.stageHeight - continueButton.height;
 			continueButton.onClick = function() { paused = false; };
 			addChild(continueButton);
-			buttons.push(continueButton);
 
 			decideForm = new DecideForm();
 			decideForm.execCallback = exec;
@@ -145,7 +142,8 @@ class Story extends Sprite
 		}
 
 		continueButton.visible = paused;
-		for (b in buttons) b.update();
+		continueButton.update();
+
 		if (deciding) {
 			decideForm.update();
 			deciding = decideForm.visible;
@@ -256,16 +254,14 @@ class Story extends Sprite
 
 }
 
-typedef Command = 
-{
+typedef Command = {
 	?type:String,
 	?params:Array<String>,
 	?pos:Int,
 	?len:Int
 }
 
-typedef Scene =
-{
+typedef Scene = {
 	?sprite:Sprite,
 	?oldBg:Bitmap,
 	?bg:Bitmap
