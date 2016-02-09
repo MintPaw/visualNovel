@@ -113,6 +113,15 @@ class Story extends Sprite
 			textField.border = true;
 			textField.wordWrap = true;
 			addChild(textField);
+
+			titleField = new TextField();
+			titleField.autoSize = TextFieldAutoSize.LEFT;
+			titleField.width = stage.stageWidth / 6;
+			titleField.x = sidePadding;
+			titleField.y = textField.y - botPadding;
+			titleField.text = "TITLE";
+			titleField.border = true;
+			addChild(titleField);
 		}
 
 		currentChar = 0;
