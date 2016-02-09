@@ -103,37 +103,9 @@ class Story extends Sprite
 			addChild(continueButton);
 			buttons.push(continueButton);
 
-			decideForm = {};
-			decideForm.sprite = new Sprite();
-			decideForm.buttons = [];
-
-			decideForm.prompt = new TextField();
-			decideForm.prompt.defaultTextFormat = new TextFormat(null, 20);
-			decideForm.prompt.autoSize = TextFieldAutoSize.CENTER;
-			decideForm.prompt.width = stage.stageWidth;
-			decideForm.prompt.y = 0;
-			decideForm.prompt.text = "Test";
-			decideForm.sprite.addChild(decideForm.prompt);
-
-			var s = decideForm.sprite;
-			s.graphics.beginFill(0x000000, 0.25);
-			s.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-
-			for (i in 0...5) {
-				var b:Button = new Button(
-						"img/buttonUp.png",
-						"img/buttonOver.png",
-						"img/buttonDown.png",
-						"<test button text>");
-				b.width = stage.stageWidth - (sidePadding * 2);
-				b.height = 60;
-				b.x = sidePadding;
-				b.y = topPadding + (b.height + innerPadding) * i;
-				b.onClick = decisionClicked.bind(i);
-				decideForm.sprite.addChild(b);
-				decideForm.buttons.push(b);
-				buttons.push(b);
-			}
+			decideForm = new DecideForm();
+			decideForm.execCallback = exec;
+			addChild(decideForm);
 
 			textField = new TextField();
 			textField.width = stage.stageWidth - (sidePadding * 2);
@@ -174,6 +146,10 @@ class Story extends Sprite
 
 		continueButton.visible = paused;
 		for (b in buttons) b.update();
+		if (deciding) {
+			decideForm.update();
+			deciding = decideForm.visible;
+		}
 
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
@@ -230,18 +206,16 @@ class Story extends Sprite
 		} else if (c.type == "decision") {
 			deciding = true;
 
-			for (b in decideForm.buttons) b.visible = false;
+			var prompt:String = c.params[0];
+			var buttonLabels:Array<String> = [];
+			var buttonParams:Array<String> = [];
 
-			decideForm.prompt.text = c.params[0];
-
-			var currentButtonIndex:Int = 0;
 			for (i in 1...c.params.length) {
-				if (i % 2 == 0) continue;
-				decideForm.buttons[currentButtonIndex].visible = true;
-				decideForm.buttons[currentButtonIndex].textField.text = c.params[i];
-				addChild(decideForm.sprite);
-				currentButtonIndex++;
+				if (i % 2 == 0) buttonParams.push(c.params[i]);
+				if (i % 2 == 1) buttonLabels.push(c.params[i]);
 			}
+
+			decideForm.show(prompt, buttonLabels, buttonParams);
 
 		} else if (c.type == "goto") {
 			for (ci in commands) {
@@ -259,23 +233,6 @@ class Story extends Sprite
 				scene.sprite.removeChild(scene.oldBg);
 				scene.oldBg = null;
 			});
-		}
-	}
-
-	public function decisionClicked(buttonIndex:Int):Void {
-		for (c in commands) {
-			if (c.pos + c.len + 1 == currentChar) {
-
-				var commandStrings:Array<String> = c.params[2 + buttonIndex * 2].split(" ");
-				var newC:Command = {};
-				newC.type = commandStrings[0];
-				newC.params = [commandStrings[1]];
-				newC.len = 0;
-
-				exec(newC);
-				deciding = false;
-				removeChild(decideForm.sprite);
-			}
 		}
 	}
 
@@ -306,14 +263,6 @@ typedef Command =
 	?pos:Int,
 	?len:Int
 }
-
-typedef DecideForm = 
-{
-	?sprite:Sprite,
-	?prompt:TextField,
-	?buttons:Array<Button>
-}
-
 
 typedef Scene =
 {
