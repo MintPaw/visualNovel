@@ -1,29 +1,36 @@
 package ;
 
+import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
-import openfl.Assets;
 import openfl.geom.Rectangle;
+import openfl.text.TextField;
+import openfl.Assets;
 
-class Button extends Bitmap
+class Button extends Sprite
 {
-	public var state:Int;
 	public var onClick:Void -> Void;
+	public var textField:TextField;
 
+	public var bitmap:Bitmap;
 	public var up:BitmapData;
 	public var over:BitmapData;
 	public var down:BitmapData;
 
+	public var state:Int;
+
 	public function new(upPath:String, overPath:String, downPath:String) {
+		super();
 		// I need the size
-		up = Assets.getBitmapData(upPath);
-		super(new BitmapData(up.width, up.height));
 
 		state = 0;
+		up = Assets.getBitmapData(upPath);
 		over = Assets.getBitmapData(overPath);
 		down = Assets.getBitmapData(downPath);
 
-		bitmapData.draw(up);
+		bitmap = new Bitmap(new BitmapData(up.width, up.height));
+		bitmap.bitmapData.draw(up);
+		addChild(bitmap);
 	}
 
 	public function update() {
@@ -36,16 +43,16 @@ class Button extends Bitmap
 
 		if (bRect.contains(mouseX, mouseY)) {
 			if (Story.mouseDown && state != 2) {
-				bitmapData.draw(down);
+				bitmap.bitmapData.draw(down);
 				state = 2;
 			} else if (!Story.mouseDown && state != 1) {
 				if (state == 2) onClick();
-				bitmapData.draw(over);
+				bitmap.bitmapData.draw(over);
 				state = 1;
 			}
 
 		} else if (state != 0) {
-			bitmapData.draw(up);
+			bitmap.bitmapData.draw(up);
 			state = 0;
 		}
 	}
