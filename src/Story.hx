@@ -127,8 +127,8 @@ class Story extends Sprite
 				b.height = 60;
 				b.x = sidePadding;
 				b.y = topPadding + (b.height + innerPadding) * i;
-				// b.onClick = decisionClicked.bind(i);
-				b.addEventListener(MouseEvent.CLICK, decisionClicked);
+				b.onClick = decisionClicked.bind(i);
+				// b.addEventListener(MouseEvent.CLICK, decisionClicked);
 
 				var t:TextField = new TextField();
 				t.defaultTextFormat = new TextFormat(null, 20);
