@@ -240,6 +240,9 @@ class Story extends Sprite
 				scene.sprite.removeChild(scene.oldBg);
 				scene.oldBg = null;
 			});
+		} else if (c.type == "speaking") {
+			titleField.visible = c.params[0] != "NULL";
+			titleField.text = c.params[0];
 		}
 	}
 
