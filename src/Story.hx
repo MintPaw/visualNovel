@@ -94,7 +94,8 @@ class Story extends Sprite
 			var innerPadding:Int = 20;
 
 			continueButton =
-				new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png");
+				new Button("img/buttonUp.png", "img/buttonOver.png", "img/buttonDown.png",
+						"continue");
 			continueButton.x = stage.stageWidth - continueButton.width;
 			continueButton.y = stage.stageHeight - continueButton.height;
 			continueButton.onClick = function() { paused = false; };
