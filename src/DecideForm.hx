@@ -47,8 +47,8 @@ class DecideForm extends Sprite
 					"img/buttonOver.png",
 					"img/buttonDown.png",
 					"<test button text>");
-			b.width = stage.stageWidth - (sidePadding * 2);
-			b.height = 60;
+			b.bitmap.width = stage.stageWidth - (sidePadding * 2);
+			b.bitmap.height = 60;
 			b.x = sidePadding;
 			b.y = topPadding + (b.height + innerPadding) * i;
 			b.onClick = decisionClicked.bind(i);

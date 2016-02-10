@@ -101,6 +101,8 @@ class Story extends Sprite
 			continueButton.onClick = function() { paused = false; };
 			addChild(continueButton);
 
+			continueButton.textField.defaultTextFormat = new TextFormat(null, 10);
+
 			decideForm = new DecideForm();
 			decideForm.execCallback = exec;
 			addChild(decideForm);

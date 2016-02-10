@@ -71,12 +71,4 @@ class Button extends Sprite
 			state = 0;
 		}
 	}
-
-	public override function set_width(v:Float):Float {
-		return bitmap.width = v;
-	}
-
-	public override function set_height(v:Float):Float {
-		return bitmap.height = v;
-	}
 }
