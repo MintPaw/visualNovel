@@ -7,16 +7,18 @@ Done:
 (pause)  
 (changeBg X) // X is new bg file  
 (decision (P) rest...)  
+
 P is prompt String, rest are choices in the format:  
 (Entry)(COMMAND)  
 Example: (decicion (Do you go outside?) (Yes)(yesLabel) (No)(noLabel))  
+
+(speaking X) // X is character  
 
 ToDo:
 (// X) // X is the comment  
 (clear)  
 (fadeIn)  
 (fadeOut)  
-(speaking X) // X is character  
   
 (changeSong X) // X is new song file  
 (playSound X) // X is sound file  

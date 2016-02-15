@@ -17,6 +17,8 @@ import motion.Actuate;
 class Story extends Sprite
 {
 	public static var mouseDown:Bool;
+	public static var parser = new hscript.Parser();
+	public static var interp = new MintInterp();
 
 	public var textField:TextField;
 	public var titleField:TextField;
@@ -137,6 +139,12 @@ class Story extends Sprite
 		done = false;
 		addChild(new openfl.display.FPS());
 
+		graphics.lineStyle(1);
+		interp.variables.set("Sprite", Sprite);
+		interp.variables.set("stage", stage);
+		interp.variables.set("story", this);
+		interp.variables.set("Math", Math);
+
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
 		addEventListener(MouseEvent.MOUSE_DOWN, mDown);
@@ -246,6 +254,12 @@ class Story extends Sprite
 		} else if (c.type == "speaking") {
 			titleField.visible = c.params[0] != "NULL";
 			titleField.text = c.params[0];
+		} else if (c.type == "clear") {
+			textField.text = "";
+		} else if (c.type == "haxe") {
+			var expr = c.params[0];
+			var ast = parser.parseString(expr);
+			interp.execute(ast);
 		}
 	}
 

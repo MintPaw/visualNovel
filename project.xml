@@ -3,11 +3,15 @@
 	
 	<meta title="VisualNovel" package="com.sample.visualnovel" version="1.0.0" company="Company Name" />
 	<app main="Main" path="bin" file="VisualNovel" />
+
+	<haxedef name="hscriptPos" />
+	<haxeflag name="-dce no" />
 	
 	<source path="src" />
 	
 	<haxelib name="openfl" />
 	<haxelib name="actuate" />
+	<haxelib name="hscript" />
 	
 	<assets path="assets/img" rename="img" />
 	<assets path="assets/story" rename="story" />

@@ -1,4 +1,5 @@
 (speaking NULL)
+(haxe for(i in 0...10) { var a = new Sprite(); a.graphics.lineStyle(1); a.graphics.drawRect(i * 20, 20, 10, 10); stage.addChild(a); })
 This is some text.
 
 More text.
@@ -13,7 +14,7 @@ That was a pause, here's another.
 This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
 (pause)
 (speaking NULL)
-This is a......<not working> (clear) ......clear.
+This is a.......................... (clear) .........................clear.
 (pause)
 This is a decision.
 (decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))
