@@ -38,7 +38,8 @@ class Button extends Sprite
 		addChild(bitmap);
 
 		textField = new TextField();
-		textField.defaultTextFormat = new TextFormat(null, 20);
+		textField.embedFonts = true;
+		textField.defaultTextFormat = new TextFormat("Open Sans", 12);
 		textField.text = text;
 		textField.autoSize = TextFieldAutoSize.CENTER;
 		textField.mouseEnabled = false;

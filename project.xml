@@ -15,5 +15,6 @@
 	
 	<assets path="assets/img" rename="img" />
 	<assets path="assets/story" rename="story" />
+	<assets path="assets/font" rename="font" />
 	
 </project>

@@ -84,6 +84,7 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
+
 			scene = new Scene();
 			addChild(scene);
 
@@ -100,7 +101,6 @@ class Story extends Sprite
 			continueButton.onClick = function() { paused = false; };
 			addChild(continueButton);
 
-			continueButton.textField.defaultTextFormat = new TextFormat(null, 10);
 
 			decideForm = new DecideForm();
 			decideForm.execCallback = exec;
@@ -114,6 +114,8 @@ class Story extends Sprite
 			textField.text = "";
 			textField.border = true;
 			textField.wordWrap = true;
+			textField.embedFonts = true;
+			textField.defaultTextFormat = new TextFormat("Open Sans", 14);
 			addChild(textField);
 
 			titleField = new TextField();
