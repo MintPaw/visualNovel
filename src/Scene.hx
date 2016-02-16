@@ -10,13 +10,15 @@ class Scene extends Sprite
 	private var _bg:Bitmap;
 	private var _oldBg:Bitmap;
 
+	private var _images:Map<String, Bitmap>;
+
 	public function new() {
 		super();
 		_bg = new Bitmap(Assets.getBitmapData("img/noBg.png"));
+		_images = new Map();
 	}
 
-	public function changeBg(imagePath:String):Void
-	{
+	public function changeBg(imagePath:String):Void {
 		_oldBg = _bg;
 		_bg = new Bitmap(Assets.getBitmapData(imagePath));
 		_bg.alpha = 0;
@@ -26,7 +28,10 @@ class Scene extends Sprite
 			removeChild(_oldBg);
 			_oldBg = null;
 		});
+	}
 
+	public function showImage(name:String, imgPath:String):Void {
+		_images.set(name, new Bitmap(Assets.getBitmapData(imgPath)));
 	}
 
 }

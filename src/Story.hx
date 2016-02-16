@@ -249,6 +249,8 @@ class Story extends Sprite
 			var expr = c.params[0];
 			var ast = parser.parseString(expr);
 			interp.execute(ast);
+		} else {
+			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}
 	}
 
