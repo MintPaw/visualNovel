@@ -149,7 +149,7 @@ class Story extends Sprite
 		stage.focus = stage;
 	}
 
-	public function update(e:Event):Void {
+	public function update(e:Event = null):Void {
 		while (speedUp) {
 			if (paused || deciding || done) {
 				speedUp = false;
@@ -259,6 +259,8 @@ class Story extends Sprite
 		} else {
 			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}
+
+		update();
 	}
 
 	public function kUp(e:KeyboardEvent):Void {
