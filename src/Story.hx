@@ -84,11 +84,8 @@ class Story extends Sprite
 		}
 
 		{ // Setup UI
-			scene = {};
-			scene.sprite = new Sprite();
-			scene.bg = new Bitmap(Assets.getBitmapData("img/noBg.png"));
-			scene.sprite.addChild(scene.bg);
-			addChild(scene.sprite);
+			scene = new Scene();
+			addChild(scene);
 
 			var topPadding:Int = 30;
 			var botPadding:Int = 30;
@@ -242,15 +239,7 @@ class Story extends Sprite
 				}
 			}
 		} else if (c.type == "changeBg") {
-			scene.oldBg = scene.bg;
-			scene.bg = new Bitmap(Assets.getBitmapData(c.params[0]));
-			scene.bg.alpha = 0;
-			scene.sprite.addChild(scene.bg);
-
-			Actuate.tween(scene.bg, 2, { alpha: 1 }).onComplete(function() {
-				scene.sprite.removeChild(scene.oldBg);
-				scene.oldBg = null;
-			});
+			scene.changeBg(c.params[0]);
 		} else if (c.type == "speaking") {
 			titleField.visible = c.params[0] != "NULL";
 			titleField.text = c.params[0];
@@ -288,10 +277,4 @@ typedef Command = {
 	?params:Array<String>,
 	?pos:Int,
 	?len:Int
-}
-
-typedef Scene = {
-	?sprite:Sprite,
-	?oldBg:Bitmap,
-	?bg:Bitmap
 }
