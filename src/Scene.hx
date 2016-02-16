@@ -30,8 +30,20 @@ class Scene extends Sprite
 		});
 	}
 
-	public function showImage(name:String, imgPath:String):Void {
+	public function addImage(name:String, imgPath:String):Void {
 		_images.set(name, new Bitmap(Assets.getBitmapData(imgPath)));
+		addChild(_images.get(name));
+	}
+
+	public function moveImage(name:String, x:Int, y:Int):Void {
+		_images.get(name).x = x;
+		_images.get(name).y = y;
+	}
+
+	public function removeImage(name:String):Void {
+		_images.get(name).x = x;
+		_images.get(name).y = y;
+		removeChild(_images.get(name));
 	}
 
 }

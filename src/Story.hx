@@ -215,6 +215,7 @@ class Story extends Sprite
 
 	public function exec(c:Command):Void {
 		trace('Running $c');
+		var p:Array<String> = c.params[0].split(" ");
 
 		if (c.type == "pause") {
 			paused = true;
@@ -249,6 +250,12 @@ class Story extends Sprite
 			var expr = c.params[0];
 			var ast = parser.parseString(expr);
 			interp.execute(ast);
+		} else if (c.type == "addImage") {
+			scene.addImage(p[0], p[1]);
+		} else if (c.type == "moveImage") {
+			scene.moveImage(p[0], Std.parseInt(p[1]), Std.parseInt(p[2]));
+		} else if (c.type == "removeImage") {
+			scene.removeImage(c.params[0]);
 		} else {
 			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}

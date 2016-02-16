@@ -1,20 +1,25 @@
 (speaking NULL)
-(haxe function doThing() {trace("a");})
-(doThing)
+(\\haxe function doThing() {trace("a");})
+(\\doThing)
 This is some text.
 
 More text.
 (label l)
+(addImage char1 img/char.png)
+(moveImage char1 0 100)
 (speaking person1)
 The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long line.
 (pause)
 (speaking person2)
+(moveImage char1 500 100)
 That was a pause, here's another.
 (pause)
-(speaking person3)
+(speaking person1)
+(moveImage char1 0 100)
 This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
 (pause)
 (speaking NULL)
+(removeImage char1)
 This is a.......................... (clear) .........................clear.
 (pause)
 This is a decision.
