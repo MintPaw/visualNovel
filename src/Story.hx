@@ -290,7 +290,8 @@ class Story extends Sprite
 
 	public function kUp(e:KeyboardEvent):Void {
 		if (e.keyCode == Keyboard.SPACE) {
-			if (state == "paused") state = "reading" else speedUp = true;
+			if (state == "paused") state = "reading";
+			if (state == "reading") speedUp = true;
 		}
 	}
 
