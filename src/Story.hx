@@ -39,7 +39,6 @@ class Story extends Sprite
 	public var lastTime:Int;
 	public var clearNext:Bool;
 	public var speedUp:Bool;
-	public var done:Bool;
 
 	public function new() {
 		super();
@@ -142,7 +141,6 @@ class Story extends Sprite
 		stage.frameRate = 60;
 		clearNext = false;
 		mouseDown = false;
-		done = false;
 		state = "reading";
 		addChild(new openfl.display.FPS());
 
@@ -224,7 +222,8 @@ class Story extends Sprite
 		textField.appendText(char);
 		currentChar++;
 
-		if (currentChar >= storyText.length) done = true;
+		if (currentChar >= storyText.length)
+			removeEventListener(Event.ENTER_FRAME, update);
 	}
 
 	public function exec(c:Command):Void {
