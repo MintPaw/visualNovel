@@ -158,14 +158,17 @@ class Story extends Sprite
 	}
 
 	public function update(e:Event = null):Void {
+		if (state == "done") return;
+
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
 
-		if (waitTime >= 0) {
+		if (waitTime > 0) {
 			trace(waitTime);
 			waitTime -= elapsed;
 			return;
 		}
+		trace(state);
 
 		if (state == "reading") {
 			continueButton.visible = false;
@@ -187,7 +190,8 @@ class Story extends Sprite
 
 		while (speedUp) {
 			updateStory();
-			if (state == "deciding" || state == "paused") speedUp = false;
+			if (state == "deciding" || state == "paused" || state == "done")
+				speedUp = false;
 		}
 	}
 
@@ -222,8 +226,7 @@ class Story extends Sprite
 		textField.appendText(char);
 		currentChar++;
 
-		if (currentChar >= storyText.length)
-			removeEventListener(Event.ENTER_FRAME, update);
+		if (currentChar >= storyText.length) state = "done";
 	}
 
 	public function exec(c:Command):Void {
@@ -277,21 +280,20 @@ class Story extends Sprite
 		} else if (c.type == "fadeIn") {
 			Actuate.tween(fader, 0.5, {alpha: 0});
 		} else if (c.type == "wait") {
-			trace(p);
 			waitTime = Std.parseInt(p[0]);
 		} else {
 			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}
 
 		var doubleUpdateAfter:Array<String> =
-			["addImage", "moveImage", "removeImage"];
+			["addImage", "moveImage", "removeImage", "fadeOut", "fadeIn", "clear"];
 		if (doubleUpdateAfter.indexOf(c.type) != -1) updateStory();
 	}
 
 	public function kUp(e:KeyboardEvent):Void {
 		if (e.keyCode == Keyboard.SPACE) {
-			if (state == "paused") state = "reading";
 			if (state == "reading") speedUp = true;
+			if (state == "paused") state = "reading";
 		}
 	}
 

@@ -30,8 +30,14 @@ This is a decision.
 (decision (Go to bed?) (Yes)(goto sleep) (No)(goto noSleep))
 
 (label sleep)
+(clear)
 (changeBg img/blueBg.png)
 You went to bed.
+(wait 1000)
+(fadeOut 0x000055)
+(wait 1000)
+(fadeIn)
+(clear)
 (goto end)
 
 (label noSleep)
