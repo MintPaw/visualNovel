@@ -19,6 +19,8 @@ class Story extends Sprite
 	public static var mouseDown:Bool;
 	public static var parser = new hscript.Parser();
 	public static var interp = new MintInterp();
+	
+	public var state:String = "";
 
 	public var textField:TextField;
 	public var titleField:TextField;
@@ -33,8 +35,6 @@ class Story extends Sprite
 
 	public var nextWordTime:Int;
 	public var lastTime:Int;
-	public var paused:Bool;
-	public var deciding:Bool;
 	public var clearNext:Bool;
 	public var speedUp:Bool;
 	public var done:Bool;
@@ -98,7 +98,7 @@ class Story extends Sprite
 						"continue");
 			continueButton.x = stage.stageWidth - continueButton.width;
 			continueButton.y = stage.stageHeight - continueButton.height;
-			continueButton.onClick = function() { paused = false; };
+			continueButton.onClick = function() { state = "reading"; };
 			addChild(continueButton);
 
 
@@ -131,11 +131,10 @@ class Story extends Sprite
 		currentChar = 0;
 		lastTime = getTime();
 		stage.frameRate = 60;
-		paused = false;
-		deciding = false;
 		clearNext = false;
 		mouseDown = false;
 		done = false;
+		state = "reading";
 		addChild(new openfl.display.FPS());
 
 		graphics.lineStyle(1);
@@ -152,32 +151,30 @@ class Story extends Sprite
 	}
 
 	public function update(e:Event = null):Void {
-		while (speedUp) {
-			if (paused || deciding || done) {
-				speedUp = false;
-				break;
-			}
-			updateStory();
-		}
+		if (state == "reading") {
+			continueButton.visible = false;
 
-		continueButton.visible = paused;
-		continueButton.update();
+			var elapsed:Int = getTime() - lastTime;
+			lastTime = getTime();
 
-		if (deciding) {
-			decideForm.update();
-			deciding = decideForm.visible;
-		}
-
-		var elapsed:Int = getTime() - lastTime;
-		lastTime = getTime();
-
-		if (!paused && !deciding) {
 			if (nextWordTime <= 0) {
 				nextWordTime = 16;
 				updateStory();
 			} else {
 				nextWordTime -= elapsed;
 			}
+		}
+
+		if (state == "paused") {
+			continueButton.visible = true;
+			continueButton.update();
+		}
+
+		if (state == "deciding") decideForm.update();
+
+		while (speedUp) {
+			updateStory();
+			if (state == "deciding" || state == "paused") speedUp = false;
 		}
 	}
 
@@ -198,7 +195,7 @@ class Story extends Sprite
 		// trace(char, currentChar);
 
 		if (textField.maxScrollV > 1) {
-			paused = true;
+			state = "paused";
 			clearNext = true;
 			for (i in 0...100) {
 				if (storyText.charAt(currentChar - i) == " " ||
@@ -220,9 +217,9 @@ class Story extends Sprite
 		var p:Array<String> = c.params[0].split(" ");
 
 		if (c.type == "pause") {
-			paused = true;
+			state = "paused";
 		} else if (c.type == "decision") {
-			deciding = true;
+			state = "deciding";
 
 			var prompt:String = c.params[0];
 			var buttonLabels:Array<String> = [];
@@ -262,12 +259,14 @@ class Story extends Sprite
 			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}
 
-		update();
+		var doubleUpdateAfter:Array<String> =
+			["addImage", "moveImage", "removeImage"];
+		if (doubleUpdateAfter.indexOf(c.type) != -1) updateStory();
 	}
 
 	public function kUp(e:KeyboardEvent):Void {
 		if (e.keyCode == Keyboard.SPACE) {
-			if (paused) paused = false else speedUp = true;
+			if (state == "paused") state = "reading" else speedUp = true;
 		}
 	}
 
