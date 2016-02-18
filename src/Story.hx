@@ -105,7 +105,8 @@ class Story extends Sprite
 
 
 			decideForm = new DecideForm();
-			decideForm.execCallback = exec;
+			decideForm.execCallback =
+				function(c:Command) { state = "reading"; exec(c); };
 			addChild(decideForm);
 
 			textField = new TextField();
