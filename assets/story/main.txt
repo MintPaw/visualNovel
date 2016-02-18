@@ -16,7 +16,11 @@ That was a pause, here's another.
 (pause)
 (speaking person1)
 (moveImage char1 0 100)
-This text is too long to be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
+This text is
+too
+long
+to
+be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
 (pause)
 (speaking NULL)
 (removeImage char1)

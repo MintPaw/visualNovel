@@ -27,6 +27,7 @@ class Story extends Sprite
 	public var decideForm:DecideForm;
 	public var continueButton:Button;
 	public var scene:Scene;
+	public var fader:Sprite;
 
 	public var commands:Array<Command>;
 
@@ -34,6 +35,7 @@ class Story extends Sprite
 	public var currentChar:Int;
 
 	public var nextWordTime:Int;
+	public var waitTime:Int;
 	public var lastTime:Int;
 	public var clearNext:Bool;
 	public var speedUp:Bool;
@@ -126,6 +128,12 @@ class Story extends Sprite
 			titleField.text = "TITLE";
 			titleField.border = true;
 			addChild(titleField);
+
+			fader = new Sprite();
+			fader.mouseEnabled = false;
+			fader.mouseChildren = false;
+			fader.alpha = 0;
+			addChild(fader);
 		}
 
 		currentChar = 0;
@@ -151,11 +159,17 @@ class Story extends Sprite
 	}
 
 	public function update(e:Event = null):Void {
+		var elapsed:Int = getTime() - lastTime;
+		lastTime = getTime();
+
+		if (waitTime >= 0) {
+			trace(waitTime);
+			waitTime -= elapsed;
+			return;
+		}
+
 		if (state == "reading") {
 			continueButton.visible = false;
-
-			var elapsed:Int = getTime() - lastTime;
-			lastTime = getTime();
 
 			if (nextWordTime <= 0) {
 				nextWordTime = 16;
@@ -255,6 +269,16 @@ class Story extends Sprite
 			scene.moveImage(p[0], Std.parseInt(p[1]), Std.parseInt(p[2]));
 		} else if (c.type == "removeImage") {
 			scene.removeImage(c.params[0]);
+		} else if (c.type == "fadeOut") {
+			fader.graphics.clear();
+			fader.graphics.beginFill(Std.parseInt(p[0]));
+			fader.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+			Actuate.tween(fader, 0.5, {alpha: 1});
+		} else if (c.type == "fadeIn") {
+			Actuate.tween(fader, 0.5, {alpha: 0});
+		} else if (c.type == "wait") {
+			trace(p);
+			waitTime = Std.parseInt(p[0]);
 		} else {
 			if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
 		}
