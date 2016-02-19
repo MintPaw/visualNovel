@@ -52,36 +52,53 @@ class Story extends Sprite
 			storyText = Assets.getText("story/main.txt");
 			commands = [{ type: "label", params: ["main"], pos: -1, len: 1 }];
 
-			var reg:EReg = new EReg("\\(.*\\)", "ig");
-			reg.map(
-					storyText, function(r) {
-						var commandString:String = reg.matched(0);
-						commandString = commandString.substring(1, commandString.length - 1);
-						if (commandString.charAt(1) == "(") return commandString;
-						if (commandString.charAt(1) == "/" && commandString.charAt(2) == "/")
-							return commandString;
+			// var commandString:Array<String> = [];
+			var inCommand:Bool = false;
+			var currentCommand:Command = "";
+			for (i in 0...storyText.length) {
+				var c:String = storyText.charAt(i);
+				if (c == "$" && !inCommand) {
+					inCommand = true;
+					currentCommand = "";
+				} else if (c == "$" && inCommand) {
+					inCommand = false;
+				} else if (inCommand) {
+					currentCommand += c;
+				}
+			}
 
-						var commandSubStrings:Array<String> = commandString.split(" ");
-						var c:Command = {};
-						c.type = commandSubStrings.shift();
-						c.params = [commandSubStrings.join(" ")];
-						c.pos = reg.matchedPos().pos;
-						c.len = reg.matchedPos().len;
-						commands.push(c);
+			Sys.exit(0);
 
-						if (c.type == "decision") {
-							var pCopy:String = c.params[0];
-							for (i in 0...99) {
-								var startCut:Int = pCopy.indexOf("(")+1;
-								var endCut:Int = pCopy.indexOf(")")-1;
-								c.params[i] = pCopy.substr(startCut, endCut);
-								pCopy = pCopy.substr(pCopy.indexOf("(", endCut), pCopy.length);
-								if (pCopy.length <= 2) break;
-							}
-						}
+			// var reg:EReg = new EReg("\\(.*\\)", "ig");
+			// reg.map(
+			// 		storyText, function(r) {
+			// 			var commandString:String = reg.matched(0);
+			// 			commandString = commandString.substring(1, commandString.length - 1);
+			// 			if (commandString.charAt(1) == "(") return commandString;
+			// 			if (commandString.charAt(1) == "/" && commandString.charAt(2) == "/")
+			// 				return commandString;
 
-						return commandString;
-					});
+			// 			var commandSubStrings:Array<String> = commandString.split(" ");
+			// 			var c:Command = {};
+			// 			c.type = commandSubStrings.shift();
+			// 			c.params = [commandSubStrings.join(" ")];
+			// 			c.pos = reg.matchedPos().pos;
+			// 			c.len = reg.matchedPos().len;
+			// 			commands.push(c);
+
+			// 			if (c.type == "decision") {
+			// 				var pCopy:String = c.params[0];
+			// 				for (i in 0...99) {
+			// 					var startCut:Int = pCopy.indexOf("(")+1;
+			// 					var endCut:Int = pCopy.indexOf(")")-1;
+			// 					c.params[i] = pCopy.substr(startCut, endCut);
+			// 					pCopy = pCopy.substr(pCopy.indexOf("(", endCut), pCopy.length);
+			// 					if (pCopy.length <= 2) break;
+			// 				}
+			// 			}
+
+			// 			return commandString;
+			// 		});
 		}
 
 		{ // Setup UI

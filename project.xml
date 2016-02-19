@@ -5,7 +5,6 @@
 	<app main="Main" path="bin" file="VisualNovel" />
 
 	<haxedef name="hscriptPos" />
-	<haxeflag name="-dce no" />
 	
 	<source path="src" />
 	
