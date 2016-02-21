@@ -29,7 +29,7 @@ $pause()$
 This is a decision.
 $decision("Go to bed", ["Yes", "goto('sleep')", "No", "goto('noSleep')"])$
 
-$label("sleep)"$
+$label("sleep")$
 $clear()$
 $changeBg("img/blueBg.png")$
 You went to bed.

@@ -67,10 +67,9 @@ class Story extends Sprite
 					currentCommand.code = "";
 				} else if (c == "$" && inCommand) {
 					if (currentCommand.code.substr(0, 5) == "label") {
-						var s:Int = currentCommand.code.indexOf("\"");
+						var s:Int = currentCommand.code.indexOf("\"") + 1;
 						var e:Int = currentCommand.code.indexOf("\"", s+1);
 
-						trace(s, e);
 						var l:Label = {};
 						l.name = currentCommand.code.substring(s, e);
 						l.pos = i;
@@ -85,7 +84,7 @@ class Story extends Sprite
 			}
 
 			// for (c in commands) trace(c);
-			for (l in labels) trace(l);
+			// for (l in labels) trace(l);
 		}
 
 		{ // Setup UI
@@ -165,6 +164,7 @@ class Story extends Sprite
 		interp.variables.set("wait", wait);
 		interp.variables.set("fadeIn", fadeIn);
 		interp.variables.set("fadeOut", fadeOut);
+		interp.variables.set("label", label);
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
@@ -245,14 +245,13 @@ class Story extends Sprite
 
 	public function exec(c:Command):Void {
 		trace('Running $c');
-		if (c.code.substr(0, 5) == "label") return;
 
 		try {
 			var expr = c.code;
 			var ast = parser.parseString(expr);
 			interp.execute(ast);
 		} catch(e:hscript.Expr.Error) {
-			trace("ERROR", e);
+			trace("ERROR", e, c.code);
 		}
 
   var doubleUpdateAfter:Array<String> =
@@ -328,6 +327,18 @@ class Story extends Sprite
 	public function fadeIn(colour:Int):Void {
 		Actuate.tween(fader, 0.5, {alpha: 0});
 	}
+
+	public function label(name:String):Void {
+		for (l in labels) {
+			if (l.name == name) {
+				trace('Macro label $name@${l.pos}');
+				return;
+			}
+		}
+
+		trace("FATAL MACRO ERROR");
+	}
+
 }
 
 typedef Command = {
