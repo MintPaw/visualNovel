@@ -253,64 +253,6 @@ class Story extends Sprite
 		} catch(e:hscript.Expr.Error) {
 			trace("ERROR", e);
 		}
-
-		// var p:Array<String> = c.params[0].split(" ");
-
-		// if (c.type == "pause") {
-		// 	state = "paused";
-		// } else if (c.type == "decision") {
-		// 	state = "deciding";
-
-		// 	var prompt:String = c.params[0];
-		// 	var buttonLabels:Array<String> = [];
-		// 	var buttonParams:Array<String> = [];
-
-		// 	for (i in 1...c.params.length) {
-		// 		if (i % 2 == 0) buttonParams.push(c.params[i]);
-		// 		if (i % 2 == 1) buttonLabels.push(c.params[i]);
-		// 	}
-
-		// 	decideForm.show(prompt, buttonLabels, buttonParams);
-
-		// } else if (c.type == "goto") {
-		// 	for (ci in commands) {
-		// 		if (ci.params[0] == c.params[0]) {
-		// 			currentChar = ci.pos;
-		// 		}
-		// 	}
-		// } else if (c.type == "changeBg") {
-		// 	scene.changeBg(c.params[0]);
-		// } else if (c.type == "speaking") {
-		// 	titleField.visible = c.params[0] != "NULL";
-		// 	titleField.text = c.params[0];
-		// } else if (c.type == "clear") {
-		// 	textField.text = "";
-		// } else if (c.type == "haxe") {
-		// 	var expr = c.params[0];
-		// 	var ast = parser.parseString(expr);
-		// 	interp.execute(ast);
-		// } else if (c.type == "addImage") {
-		// 	scene.addImage(p[0], p[1]);
-		// } else if (c.type == "moveImage") {
-		// 	scene.moveImage(p[0], Std.parseInt(p[1]), Std.parseInt(p[2]));
-		// } else if (c.type == "removeImage") {
-		// 	scene.removeImage(c.params[0]);
-		// } else if (c.type == "fadeOut") {
-		// 	fader.graphics.clear();
-		// 	fader.graphics.beginFill(Std.parseInt(p[0]));
-		// 	fader.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
-		// 	Actuate.tween(fader, 0.5, {alpha: 1});
-		// } else if (c.type == "fadeIn") {
-		// 	Actuate.tween(fader, 0.5, {alpha: 0});
-		// } else if (c.type == "wait") {
-		// 	waitTime = Std.parseInt(p[0]);
-		// } else {
-		// 	if (interp.variables.exists(c.type)) interp.variables.get(c.type)();
-		// }
-
-		// var doubleUpdateAfter:Array<String> =
-		// 	["addImage", "moveImage", "removeImage", "fadeOut", "fadeIn", "clear"];
-		// if (doubleUpdateAfter.indexOf(c.type) != -1) updateStory();
 	}
 
 	public function kUp(e:KeyboardEvent):Void {
