@@ -79,9 +79,9 @@ class DecideForm extends Sprite
 	private function decisionClicked(buttonIndex:Int):Void {
 		var commandStrings:Array<String> = params[buttonIndex].split(" ");
 		var newC:Command = {};
-		newC.type = commandStrings[0];
-		newC.params = [commandStrings[1]];
-		newC.len = 0;
+		// newC.type = commandStrings[0];
+		// newC.params = [commandStrings[1]];
+		// newC.len = 0;
 
 		execCallback(newC);
 		visible = false;

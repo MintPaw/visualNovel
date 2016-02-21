@@ -1,6 +1,6 @@
 $speaking()$
-$//haxe function doThing() {trace("a");}$
-$//doThing$
+$// function doThing() {trace("a");}$
+$doThing()$
 This is some text.
 
 More text.
