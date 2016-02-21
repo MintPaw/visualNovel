@@ -24,10 +24,10 @@ be shown at at once, there will have to be a break at one point or another but h
 $pause()$
 $speaking()$
 $removeImage("char1")$
-This is a.......................... $clear$ .........................clear.
+This is a.......................... $clear()$ .........................clear.
 $pause()$
 This is a decision.
-$decision("Go to bed", "Yes", "goto('sleep')", "No", "goto('noSleep')")$
+$decision("Go to bed", ["Yes", "goto('sleep')", "No", "goto('noSleep')"])$
 
 $label sleep$
 $clear()$
@@ -40,7 +40,7 @@ $fadeIn()$
 $clear()$
 $goto("end")$
 
-$label("noSleep")$
+$label noSleep$
 $changeBg("img/redBg.png")$
 You stayed up.
 $goto("end")$

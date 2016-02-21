@@ -66,13 +66,14 @@ class Story extends Sprite
 					currentCommand.pos = i;
 					currentCommand.code = "";
 				} else if (c == "$" && inCommand) {
-					inCommand = false;
 					if (currentCommand.code.substr(0, 5) == "label") {
 						var l:Label = {};
-						l.name = currentCommand.code.substr(7, currentCommand.code.length);
+						l.name = currentCommand.code.substr(6, currentCommand.code.length);
 						l.pos = i;
 						labels.push(l);
 					}
+
+					inCommand = false;
 					commands.push(currentCommand);
 				} else if (inCommand) {
 					currentCommand.code += c;
@@ -80,6 +81,7 @@ class Story extends Sprite
 			}
 
 			// for (c in commands) trace(c);
+			for (l in labels) trace(l);
 		}
 
 		{ // Setup UI
@@ -148,6 +150,17 @@ class Story extends Sprite
 		interp.variables.set("stage", stage);
 		interp.variables.set("story", this);
 		interp.variables.set("speaking", speaking);
+		interp.variables.set("addImage", scene.addImage);
+		interp.variables.set("moveImage", scene.moveImage);
+		interp.variables.set("removeImage", scene.removeImage);
+		interp.variables.set("pause", pause);
+		interp.variables.set("clear", clear);
+		interp.variables.set("decision", decision);
+		interp.variables.set("goto", goto);
+		interp.variables.set("changeBg", scene.changeBg);
+		interp.variables.set("wait", wait);
+		interp.variables.set("fadeIn", fadeIn);
+		interp.variables.set("fadeOut", fadeOut);
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
@@ -163,7 +176,6 @@ class Story extends Sprite
 		lastTime = getTime();
 
 		if (waitTime > 0) {
-			trace("Waiting", waitTime);
 			waitTime -= elapsed;
 			return;
 		}
@@ -325,6 +337,47 @@ class Story extends Sprite
 		if (name != null) titleField.text = name;
 	}
 
+	public function pause():Void {
+		state = "paused";
+	}
+
+	public function clear():Void {
+		textField.text = "";
+	}
+	
+	public function decision(prompt:String, rest:Array<String>):Void {
+		state = "deciding";
+
+		var prompt:String = prompt;
+		var buttonLabels:Array<String> = [];
+		var buttonParams:Array<String> = [];
+
+		for (i in 0...rest.length) {
+			if (i % 2 == 0) buttonLabels.push(rest[i]);
+			if (i % 2 == 1) buttonParams.push(rest[i]);
+		}
+
+		decideForm.show(prompt, buttonLabels, buttonParams);
+	}
+
+	public function goto(loc:String):Void {
+		for (ci in labels) if (loc == ci.name) currentChar = ci.pos + 1;
+	}
+
+	public function wait(ms:Int):Void {
+		waitTime = ms;
+	}
+
+	public function fadeOut(colour:Int):Void {
+		fader.graphics.clear();
+		fader.graphics.beginFill(colour);
+		fader.graphics.drawRect(0, 0, stage.stageWidth, stage.stageHeight);
+		Actuate.tween(fader, 0.5, {alpha: 1});
+	}
+
+	public function fadeIn(colour:Int):Void {
+		Actuate.tween(fader, 0.5, {alpha: 0});
+	}
 }
 
 typedef Command = {
