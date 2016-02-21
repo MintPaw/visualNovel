@@ -1,47 +1,48 @@
-$speaking()$
-$function doThing() {trace("a");}$
-$doThing()$
+$speaking();
+function doThing() {trace("a");};
+doThing();$
 This is some text.
 
 More text.
-$label("l")$
-$addImage("char1", "img/char.png")$
-$moveImage("char1", 0, 100)$
-$speaking("person1")$
+$label("l");
+addImage("char1", "img/char.png");
+moveImage("char1", 0, 100);
+speaking("person1");$
 The start of a label is above, this is a very long long long long long long long long long long long long long long long long long long long long long line.
-$pause()$
-$speaking("person2")$
-$moveImage("char1", 500, 100)$
+$pause();
+speaking("person2");
+moveImage("char1", 500, 100);$
 That was a pause, here's another.
-$pause()$
-$speaking("person1")$
-$moveImage("char1", 0, 100)$
+$pause();
+speaking("person1");
+moveImage("char1", 0, 100);$
 This text is
 too
 long
 to
 be shown at at once, there will have to be a break at one point or another but hopefully the full text will still make sense.
-$pause()$
-$speaking()$
-$removeImage("char1")$
+$pause();
+speaking();
+removeImage("char1");$
 This is a.......................... $clear()$ .........................clear.
-$pause()$
+$pause();$
 This is a decision.
-$decision("Go to bed", ["Yes", "goto('sleep')", "No", "goto('noSleep')"])$
+$decision("Go to bed", ["Yes", "goto('sleep')", "No", "goto('noSleep')"]);$
 
-$label("sleep")$
-$clear()$
-$changeBg("img/blueBg.png")$
+$label("sleep");
+clear();
+changeBg("img/blueBg.png")$
 You went to bed.
 $wait(1000)$
 $fadeOut(0x000055)$
+$clear()$
 $wait(1000)$
 $fadeIn()$
 $clear()$
 $goto("end")$
 
-$label("noSleep")$
-$changeBg("img/redBg.png")$
+$label("noSleep");
+changeBg("img/redBg.png");$
 You stayed up.
 $goto("end")$
 

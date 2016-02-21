@@ -180,9 +180,11 @@ class Story extends Sprite
 		lastTime = getTime();
 
 		if (waitTime > 0) {
+			trace("Wait", waitTime);
 			waitTime -= elapsed;
 			return;
 		}
+		trace(state);
 
 		if (state == "reading") {
 			continueButton.visible = false;
