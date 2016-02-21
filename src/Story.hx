@@ -81,7 +81,7 @@ class Story extends Sprite
 			}
 
 			// for (c in commands) trace(c);
-			for (l in labels) trace(l);
+			// for (l in labels) trace(l);
 		}
 
 		{ // Setup UI
@@ -241,10 +241,7 @@ class Story extends Sprite
 
 	public function exec(c:Command):Void {
 		trace('Running $c');
-		if (c.code.substr(0, 5) == "label") {
-			trace("Skipping label");
-			return;
-		}
+		if (c.code.substr(0, 5) == "label") return;
 
 		try {
 			var expr = c.code;
