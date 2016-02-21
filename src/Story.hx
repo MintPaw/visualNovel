@@ -253,6 +253,13 @@ class Story extends Sprite
 		} catch(e:hscript.Expr.Error) {
 			trace("ERROR", e);
 		}
+
+  var doubleUpdateAfter:Array<String> =
+			["addImage", "moveImage", "removeImage", "fadeOut", "fadeIn", "clear"];
+
+		for (d in doubleUpdateAfter)
+			if (c.code.substr(0, d.length) == d)
+				updateStory();
 	}
 
 	public function kUp(e:KeyboardEvent):Void {
