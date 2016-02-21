@@ -1,25 +1,28 @@
-Notes:  
-  
-Commands:  
-Done:  
-(label X) // X is label (you cannot call a label 'main')  
-(goto X) // X is label  
-(pause)  
-(changeBg X) // X is new bg file  
-(decision (P) rest...)  
-  
-P is prompt String, rest are choices in the format:  
-(Entry)(COMMAND)  
-Example: (decicion (Do you go outside?) (Yes)(yesLabel) (No)(noLabel))  
-  
-(speaking X) // X is character  
-(clear)  
-(// X) // X is the comment  
-(fadeOut X) // X is colour in hex  
-(fadeIn) 
-(wait X) // X is milliseconds  
+Notes:
 
-Todo:  
-(changeSong X) // X is new song file  
-(playSound X) // X is sound file  
-(forcePause X) // X is seconds  
+	Commands:
+	Done:
+	label X // X is label (you cannot call a label 'main')
+	goto(X) // X is label
+	pause()
+	changeBg(X) // X is new bg file
+
+	decision(X, C)
+
+	X is prompt String, C is an array of choices in the format:
+	"Option Text", "codeToRun()"
+	Example:
+	decision(
+		"Do you go outside?",
+		["Yes", "goto('yesLabel')",
+		"No", "goto('noLabel')")
+
+	speaking(X) // X is character
+	clear()
+	fadeOut(X) // X is colour in hex
+	fadeIn()
+	wait(X) // X is milliseconds
+
+	Todo:
+	changeSong(X) // X is new song file
+	playSound(X) // X is sound file
