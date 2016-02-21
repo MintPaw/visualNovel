@@ -2,7 +2,7 @@ Notes:
 
 	Commands:
 	Done:
-	label X // X is label (you cannot call a label 'main')
+	label(X) // X is label (you cannot call a label 'main', label MUST be in double quotes, this function is a MACRO)
 	goto(X) // X is label
 	pause()
 	changeBg(X) // X is new bg file

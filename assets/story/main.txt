@@ -4,7 +4,7 @@ $doThing()$
 This is some text.
 
 More text.
-$label l$
+$label("l")$
 $addImage("char1", "img/char.png")$
 $moveImage("char1", 0, 100)$
 $speaking("person1")$
@@ -29,7 +29,7 @@ $pause()$
 This is a decision.
 $decision("Go to bed", ["Yes", "goto('sleep')", "No", "goto('noSleep')"])$
 
-$label sleep$
+$label("sleep)"$
 $clear()$
 $changeBg("img/blueBg.png")$
 You went to bed.
@@ -40,10 +40,10 @@ $fadeIn()$
 $clear()$
 $goto("end")$
 
-$label noSleep$
+$label("noSleep")$
 $changeBg("img/redBg.png")$
 You stayed up.
 $goto("end")$
 
-$label end$
+$label("end")$
 The end.

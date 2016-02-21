@@ -67,8 +67,12 @@ class Story extends Sprite
 					currentCommand.code = "";
 				} else if (c == "$" && inCommand) {
 					if (currentCommand.code.substr(0, 5) == "label") {
+						var s:Int = currentCommand.code.indexOf("\"");
+						var e:Int = currentCommand.code.indexOf("\"", s+1);
+
+						trace(s, e);
 						var l:Label = {};
-						l.name = currentCommand.code.substr(6, currentCommand.code.length);
+						l.name = currentCommand.code.substring(s, e);
 						l.pos = i;
 						labels.push(l);
 					}
@@ -81,7 +85,7 @@ class Story extends Sprite
 			}
 
 			// for (c in commands) trace(c);
-			// for (l in labels) trace(l);
+			for (l in labels) trace(l);
 		}
 
 		{ // Setup UI
