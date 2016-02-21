@@ -1,5 +1,5 @@
 $speaking()$
-$// function doThing() {trace("a");}$
+$function doThing() {trace("a");}$
 $doThing()$
 This is some text.
 

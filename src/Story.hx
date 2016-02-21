@@ -10,7 +10,6 @@ import openfl.text.TextFormat;
 import openfl.events.Event;
 import openfl.events.KeyboardEvent;
 import openfl.events.MouseEvent;
-import openfl.errors.Error;
 import openfl.ui.Keyboard;
 import openfl.Assets;
 import motion.Actuate;
@@ -30,6 +29,7 @@ class Story extends Sprite
 	public var scene:Scene;
 	public var fader:Sprite;
 
+	public var labels:Array<Label>;
 	public var commands:Array<Command>;
 
 	public var storyText:String;
@@ -49,9 +49,10 @@ class Story extends Sprite
 	public function init(e:Event):Void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
-		{ // setup story
+		{ // parse story
 			storyText = Assets.getText("story/main.txt");
 			commands = [];
+			labels = [];
 			nextWordTime = 0;
 
 			var inCommand:Bool = false;
@@ -66,6 +67,12 @@ class Story extends Sprite
 					currentCommand.code = "";
 				} else if (c == "$" && inCommand) {
 					inCommand = false;
+					if (currentCommand.code.substr(0, 5) == "label") {
+						var l:Label = {};
+						l.name = currentCommand.code.substr(7, currentCommand.code.length);
+						l.pos = i;
+						labels.push(l);
+					}
 					commands.push(currentCommand);
 				} else if (inCommand) {
 					currentCommand.code += c;
@@ -156,11 +163,10 @@ class Story extends Sprite
 		lastTime = getTime();
 
 		if (waitTime > 0) {
-			trace(waitTime);
+			trace("Waiting", waitTime);
 			waitTime -= elapsed;
 			return;
 		}
-		trace(state);
 
 		if (state == "reading") {
 			continueButton.visible = false;
@@ -169,7 +175,6 @@ class Story extends Sprite
 				nextWordTime = 16;
 				updateStory();
 			} else {
-				trace(nextWordTime);
 				nextWordTime -= elapsed;
 			}
 		}
@@ -224,9 +229,18 @@ class Story extends Sprite
 
 	public function exec(c:Command):Void {
 		trace('Running $c');
-		var expr = c.code;
-		var ast = parser.parseString(expr);
-		interp.execute(ast);
+		if (c.code.substr(0, 5) == "label") {
+			trace("Skipping label");
+			return;
+		}
+
+		try {
+			var expr = c.code;
+			var ast = parser.parseString(expr);
+			interp.execute(ast);
+		} catch(e:hscript.Expr.Error) {
+			trace("ERROR", e);
+		}
 
 		// var p:Array<String> = c.params[0].split(" ");
 
@@ -315,5 +329,10 @@ class Story extends Sprite
 
 typedef Command = {
 	?code:String,
+	?pos:Int
+}
+
+typedef Label = {
+	?name:String,
 	?pos:Int
 }
