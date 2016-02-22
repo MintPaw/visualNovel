@@ -33,7 +33,7 @@ class Button extends Sprite
 		over = Assets.getBitmapData(overPath);
 		down = Assets.getBitmapData(downPath);
 
-		bitmap = new Bitmap(new BitmapData(up.width, up.height));
+		bitmap = new Bitmap(new BitmapData(up.width, up.height), null, true);
 		bitmap.bitmapData.draw(up);
 		addChild(bitmap);
 

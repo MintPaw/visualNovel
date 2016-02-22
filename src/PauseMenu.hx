@@ -17,7 +17,15 @@ class PauseMenu extends Sprite
 		addChild(_bg);
 
 		_buttons = [];
-		var labels:Array<String> = [ "Save", "Load", "Quit" ];
+		var labels:Array<String> = [ 
+			"Save in slot 1",
+			"Save in slot 2",
+			"Save in slot 3",
+			"Load in slot 1",
+			"Load in slot 2",
+			"Load in slot 3",
+			"Quit" ];
+
 		for (l in labels) {
 			var b:Button = new Button(
 					"img/buttonUp.png",
@@ -26,7 +34,7 @@ class PauseMenu extends Sprite
 					l);
 
 			b.bitmap.width = 200;
-			b.bitmap.height = 75;
+			b.bitmap.height = 50;
 			b.x = width / 2 - b.width / 2;
 			b.y = (20 + b.height) * (labels.indexOf(l) + 1);
 			b.onClick = buttonClicked.bind(l);
