@@ -55,7 +55,6 @@ class Button extends Sprite
 
 		textField.x = (bitmap.width / 2 - textField.width / 2);
 		textField.y = (bitmap.height / 2 - textField.height / 2);
-		textField.border = true;
 
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
