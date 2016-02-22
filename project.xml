@@ -3,6 +3,7 @@
 	
 	<meta title="VisualNovel" package="com.sample.visualnovel" version="1.0.0" company="Company Name" />
 	<app main="Main" path="bin" file="VisualNovel" />
+	<window width="1280" height="720" />
 
 	<haxedef name="hscriptPos" />
 	
