@@ -44,13 +44,6 @@ class Story extends Sprite
 	public function init(e:Event):Void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
 
-		{ // setup menu
-			menu = new PauseMenu();
-			menu.x = stage.stageWidth / 2 - menu.width / 2;
-			menu.y = stage.stageHeight / 2 - menu.height / 2;
-			addChild(menu);
-		}
-
 		{ // parse story
 			storyText = Assets.getText("story/main.txt");
 			commands = [];
@@ -139,6 +132,11 @@ class Story extends Sprite
 			fader.mouseChildren = false;
 			fader.alpha = 0;
 			addChild(fader);
+
+			menu = new PauseMenu();
+			menu.x = stage.stageWidth / 2 - menu.width / 2;
+			menu.y = stage.stageHeight / 2 - menu.height / 2;
+			addChild(menu);
 		}
 
 		currentChar = 0;
@@ -179,7 +177,12 @@ class Story extends Sprite
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
 
-		if (state == "done" || menu.visible) return;
+		if (state == "done") return;
+
+		if (menu.visible) {
+			menu.update();
+			return;
+		}
 
 		if (waitTime > 0) {
 			waitTime -= elapsed;

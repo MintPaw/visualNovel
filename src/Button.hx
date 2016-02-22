@@ -55,7 +55,7 @@ class Button extends Sprite
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
 
-		var bRect:Rectangle = getBounds(parent);
+		var bRect:Rectangle = getBounds(stage);
 
 		if (bRect.contains(mouseX, mouseY)) {
 			if (Story.mouseDown && state != 2) {
