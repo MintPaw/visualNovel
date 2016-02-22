@@ -176,10 +176,10 @@ class Story extends Sprite
 	}
 
 	public function update(e:Event = null):Void {
-		if (state == "done") return;
-
 		var elapsed:Int = getTime() - lastTime;
 		lastTime = getTime();
+
+		if (state == "done" || menu.visible) return;
 
 		if (waitTime > 0) {
 			waitTime -= elapsed;
@@ -269,6 +269,10 @@ class Story extends Sprite
 			if (state == "reading") speedUp = true;
 			if (state == "paused") state = "reading";
 		}
+
+		if (e.keyCode == Keyboard.ESCAPE) {
+			if (menu.visible) menu.hide() else menu.show();
+		}
 	}
 
 	public function mDown(e:MouseEvent):Void {
@@ -283,6 +287,7 @@ class Story extends Sprite
 		return Std.int(haxe.Timer.stamp() * 1000);
 	}
 
+	// ----------------------------- Story functions
 	public function speaking(name:String = null):Void {
 		titleField.visible = name != null;
 		if (name != null) titleField.text = name;

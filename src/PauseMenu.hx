@@ -16,8 +16,12 @@ class PauseMenu extends Sprite
 		addChild(_bg);
 	}
 
-	private function show():Void {
+	public function show():Void {
 		visible = mouseEnabled = mouseChildren = true;
+	}
+
+	public function hide():Void {
+		visible = mouseEnabled = mouseChildren = false;
 	}
 
 }
