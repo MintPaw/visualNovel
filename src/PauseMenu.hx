@@ -21,9 +21,9 @@ class PauseMenu extends Sprite
 			"Save in slot 1",
 			"Save in slot 2",
 			"Save in slot 3",
-			"Load in slot 1",
-			"Load in slot 2",
-			"Load in slot 3",
+			"Load from slot 1",
+			"Load from slot 2",
+			"Load from slot 3",
 			"Quit" ];
 
 		for (l in labels) {
@@ -57,8 +57,12 @@ class PauseMenu extends Sprite
 	}
 
 	private function buttonClicked(l:String):Void {
-		trace(l);
+		var proc:String = "";
 
+		if (l.substr(0, 12) == "Save in slot") proc = "save";
+		if (l.substr(0, 14) == "Load from slot") proc = "load";
+
+		trace(l, proc);
 	}
 
 }

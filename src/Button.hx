@@ -1,6 +1,6 @@
 package ;
 
-import openfl.display.Sprite;
+import openfl.display.*;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
@@ -33,7 +33,11 @@ class Button extends Sprite
 		over = Assets.getBitmapData(overPath);
 		down = Assets.getBitmapData(downPath);
 
-		bitmap = new Bitmap(new BitmapData(up.width, up.height), null, true);
+		bitmap = new Bitmap(
+				new BitmapData(up.width, up.height),
+				PixelSnapping.AUTO,
+				true);
+
 		bitmap.bitmapData.draw(up);
 		addChild(bitmap);
 
@@ -49,8 +53,9 @@ class Button extends Sprite
 	public function update() {
 		if (stage == null) return;
 
-		textField.x = (width - textField.width) / 2;
-		textField.y = (height - textField.height) / 2;
+		textField.x = (bitmap.width / 2 - textField.width / 2);
+		textField.y = (bitmap.height / 2 - textField.height / 2);
+		textField.border = true;
 
 		var mouseX:Int = Std.int(stage.mouseX);
 		var mouseY:Int = Std.int(stage.mouseY);
