@@ -1,17 +1,11 @@
 package ;
 
-import openfl.display.Sprite;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-import openfl.geom.Rectangle;
-import openfl.text.TextField;
-import openfl.text.TextFieldAutoSize;
-import openfl.text.TextFormat;
-import openfl.events.Event;
-import openfl.events.KeyboardEvent;
-import openfl.events.MouseEvent;
+import openfl.display.*;
+import openfl.geom.*;
+import openfl.text.*;
+import openfl.events.*;
 import openfl.ui.Keyboard;
-import openfl.Assets;
+import openfl.*;
 import motion.Actuate;
 
 class Story extends Sprite
@@ -28,6 +22,7 @@ class Story extends Sprite
 	public var continueButton:Button;
 	public var scene:Scene;
 	public var fader:Sprite;
+	public var menu:PauseMenu;
 
 	public var labels:Array<Label>;
 	public var commands:Array<Command>;
@@ -48,6 +43,13 @@ class Story extends Sprite
 
 	public function init(e:Event):Void {
 		removeEventListener(Event.ADDED_TO_STAGE, init);
+
+		{ // setup menu
+			menu = new PauseMenu();
+			menu.x = stage.stageWidth / 2 - menu.width / 2;
+			menu.y = stage.stageHeight / 2 - menu.height / 2;
+			addChild(menu);
+		}
 
 		{ // parse story
 			storyText = Assets.getText("story/main.txt");
@@ -180,11 +182,9 @@ class Story extends Sprite
 		lastTime = getTime();
 
 		if (waitTime > 0) {
-			trace("Wait", waitTime);
 			waitTime -= elapsed;
 			return;
 		}
-		trace(state);
 
 		if (state == "reading") {
 			continueButton.visible = false;
