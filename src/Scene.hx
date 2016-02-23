@@ -75,9 +75,23 @@ class Scene extends Sprite
 
 		if (op == "load") {
 			if (loadData == null) return "";
+
+			for (k in _images.keys()) removeImage(k);
+
 			var us = new Unserializer(loadData);
 			var loadedArray:Array<Array<String>> = us.unserialize();
-			trace(loadedArray);
+			// trace(loadedArray);
+
+			for (currentObj in loadedArray) {
+				addImage(currentObj[0], currentObj[1]);
+				for (field in bmpFields) {
+					var bmp:Bitmap = _images.get(currentObj[0]).bmp;
+					var index:Int = bmpFields.indexOf(field);
+					var fieldValue:Int = Std.parseInt(currentObj[index+2]);
+					// trace("Setting", field, index, fieldValue);
+					Reflect.setProperty(bmp, field, fieldValue);
+				}
+			}
 		}
 
 		return "";

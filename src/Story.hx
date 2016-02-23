@@ -356,16 +356,28 @@ class Story extends Sprite
 		var so:SharedObject = SharedObject.getLocal("testGame" + slot);
 
 		if (op == "save") {
+			so.data._currentText = textField.text;
 			so.data._char = currentChar;
 			so.data._state = state;
 			so.data._images = scene.data("save");
 		}
 
 		if (op == "load") {
+			textField.text = so.data._currentText;
 			currentChar = so.data._char;
-			state = so.data._state;
+			// state = so.data._state;
+			state = "reading";
 			scene.data("load", so.data._images);
+
+			for (c in commands) {
+				var s:Int = c.pos;
+				var e:Int = s + c.code.length + 3;
+				if (currentChar >= s && currentChar <= e) exec(c);
+			}
+			
 		}
+
+		// trace("after", currentChar);
 
 		so.flush();
 		so.close();
