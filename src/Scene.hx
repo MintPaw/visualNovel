@@ -10,7 +10,7 @@ class Scene extends Sprite
 	private var _bg:Bitmap;
 	private var _oldBg:Bitmap;
 
-	private var _images:Map<String, Bitmap>;
+	private var _images:Map<String, Image>;
 
 	public function new() {
 		super();
@@ -31,19 +31,28 @@ class Scene extends Sprite
 	}
 
 	public function addImage(name:String, imgPath:String):Void {
-		_images.set(name, new Bitmap(Assets.getBitmapData(imgPath)));
-		addChild(_images.get(name));
+		var img:Image = {
+			path: imgPath,
+			bmp: new Bitmap(Assets.getBitmapData(imgPath))
+		};
+
+		_images.set(name, img);
+		addChild(img.bmp);
 	}
 
 	public function moveImage(name:String, x:Int, y:Int):Void {
-		_images.get(name).x = x;
-		_images.get(name).y = y;
+		_images.get(name).bmp.x = x;
+		_images.get(name).bmp.y = y;
 	}
 
 	public function removeImage(name:String):Void {
-		_images.get(name).x = x;
-		_images.get(name).y = y;
-		removeChild(_images.get(name));
+		removeChild(_images.get(name).bmp);
+		_images.remove(name);
 	}
 
+}
+
+typedef Image = {
+	path:String,
+	bmp:Bitmap
 }

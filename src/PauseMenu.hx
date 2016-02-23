@@ -1,9 +1,12 @@
 package ;
 
 import openfl.display.*;
+import Story;
 
 class PauseMenu extends Sprite
 {
+	public var execCallback:Dynamic;
+
 	private var _bg:Sprite;
 	private var _buttons:Array<Button>;
 
@@ -62,7 +65,13 @@ class PauseMenu extends Sprite
 		if (l.substr(0, 12) == "Save in slot") proc = "save";
 		if (l.substr(0, 14) == "Load from slot") proc = "load";
 
-		trace(l, proc);
+		if (proc == "save" || proc == "load") {
+			var slot:Int = Std.parseInt(l.charAt(l.length - 1));
+			var c:Command = {};
+			c.code = '$proc($slot);';
+			execCallback(c);
+		}
+
 	}
 
 }

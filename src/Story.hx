@@ -4,7 +4,8 @@ import openfl.display.*;
 import openfl.geom.*;
 import openfl.text.*;
 import openfl.events.*;
-import openfl.ui.Keyboard;
+import openfl.ui.*;
+import openfl.net.*;
 import openfl.*;
 import motion.Actuate;
 
@@ -136,6 +137,7 @@ class Story extends Sprite
 			menu = new PauseMenu();
 			menu.x = stage.stageWidth / 2 - menu.width / 2;
 			menu.y = stage.stageHeight / 2 - menu.height / 2;
+			menu.execCallback = exec;
 			addChild(menu);
 		}
 
@@ -165,6 +167,8 @@ class Story extends Sprite
 		interp.variables.set("fadeIn", fadeIn);
 		interp.variables.set("fadeOut", fadeOut);
 		interp.variables.set("label", label);
+		interp.variables.set("save", save);
+		interp.variables.set("load", load);
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
@@ -347,6 +351,19 @@ class Story extends Sprite
 		}
 
 		trace("FATAL MACRO ERROR");
+	}
+
+	public function save(slot:Int):Void {
+		trace('Would save at $slot');
+		return;
+		var so:SharedObject = SharedObject.getLocal("testGame");
+		so.data._char = currentChar;
+		so.data._state = state;
+	}
+
+	public function load(slot:Int):Void {
+		trace('Would load from $slot');
+		return;
 	}
 
 }
