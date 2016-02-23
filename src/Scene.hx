@@ -7,26 +7,26 @@ import motion.Actuate;
 
 class Scene extends Sprite
 {
-	private var _bg:Bitmap;
-	private var _oldBg:Bitmap;
-
 	private var _images:Map<String, Image>;
 
 	public function new() {
 		super();
-		_bg = new Bitmap(Assets.getBitmapData("img/noBg.png"));
+
 		_images = new Map();
+
+		addImage("_bg", "img/noBg.png");
 	}
 
 	public function changeBg(imagePath:String):Void {
-		_oldBg = _bg;
-		_bg = new Bitmap(Assets.getBitmapData(imagePath));
-		_bg.alpha = 0;
-		addChild(_bg);
+		var toRem:Bitmap = _images.get("_bg").bmp;
 
-		Actuate.tween(_bg, 2, { alpha: 1 }).onComplete(function() {
-			removeChild(_oldBg);
-			_oldBg = null;
+		addImage("_bg", imagePath);
+		_images.get("_bg").bmp.width = stage.stageWidth;
+		_images.get("_bg").bmp.height = stage.stageHeight;
+		_images.get("_bg").bmp.alpha = 0;
+
+		Actuate.tween(_images.get("_bg").bmp, 2, { alpha: 1 }).onComplete(function() {
+			removeChild(toRem);
 		});
 	}
 
