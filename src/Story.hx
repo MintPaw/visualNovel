@@ -168,8 +168,8 @@ class Story extends Sprite
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
-		addEventListener(MouseEvent.MOUSE_DOWN, mDown);
-		addEventListener(MouseEvent.MOUSE_UP, mUp);
+		stage.addEventListener(MouseEvent.MOUSE_DOWN, mDown);
+		stage.addEventListener(MouseEvent.MOUSE_UP, mUp);
 		stage.focus = stage;
 	}
 
@@ -184,9 +184,8 @@ class Story extends Sprite
 			return;
 		}
 
-		if (waitTime > 0) {
-			waitTime -= elapsed;
-			return;
+		if (state == "waiting") {
+			if (waitTime > 0) waitTime -= elapsed else state = "reading";
 		}
 
 		if (state == "reading") {
@@ -324,6 +323,7 @@ class Story extends Sprite
 	}
 
 	public function wait(ms:Int):Void {
+		state = "waiting";
 		waitTime = ms;
 	}
 
