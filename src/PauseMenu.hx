@@ -68,7 +68,7 @@ class PauseMenu extends Sprite
 		if (proc == "save" || proc == "load") {
 			var slot:Int = Std.parseInt(l.charAt(l.length - 1));
 			var c:Command = {};
-			c.code = '$proc($slot);';
+			c.code = 'data("$proc", $slot);';
 			execCallback(c);
 		}
 

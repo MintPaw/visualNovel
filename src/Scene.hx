@@ -1,9 +1,10 @@
 package ;
 
-import openfl.display.Sprite;
-import openfl.display.Bitmap;
+import openfl.display.*;
+import openfl.utils.*;
 import openfl.Assets;
 import motion.Actuate;
+import haxe.*;
 
 class Scene extends Sprite
 {
@@ -48,6 +49,38 @@ class Scene extends Sprite
 	public function removeImage(name:String):Void {
 		removeChild(_images.get(name).bmp);
 		_images.remove(name);
+	}
+
+	public function data(op:String, loadData:String = null):String
+	{
+		var bmpFields:Array<String> = ["x", "y", "width", "height"];
+
+		if (op == "save") {
+		var saveArray:Array<Array<String>> = [];
+			for (k in _images.keys()) {
+				var obj:Array<String> = [];
+				obj.push(k);
+				obj.push(_images.get(k).path);
+
+				for (field in bmpFields) {
+					obj.push(Reflect.getProperty(_images.get(k).bmp, field));
+				}
+
+				saveArray.push(obj);
+			}
+			var s = new Serializer();
+			s.serialize(saveArray);
+			return s.toString();
+		}
+
+		if (op == "load") {
+			if (loadData == null) return "";
+			var us = new Unserializer(loadData);
+			var loadedArray:Array<Array<String>> = us.unserialize();
+			trace(loadedArray);
+		}
+
+		return "";
 	}
 
 }

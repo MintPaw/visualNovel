@@ -167,8 +167,7 @@ class Story extends Sprite
 		interp.variables.set("fadeIn", fadeIn);
 		interp.variables.set("fadeOut", fadeOut);
 		interp.variables.set("label", label);
-		interp.variables.set("save", save);
-		interp.variables.set("load", load);
+		interp.variables.set("data", data);
 
 		addEventListener(Event.ENTER_FRAME, update);
 		stage.addEventListener(KeyboardEvent.KEY_UP, kUp);
@@ -353,17 +352,23 @@ class Story extends Sprite
 		trace("FATAL MACRO ERROR");
 	}
 
-	public function save(slot:Int):Void {
-		trace('Would save at $slot');
-		return;
-		var so:SharedObject = SharedObject.getLocal("testGame");
-		so.data._char = currentChar;
-		so.data._state = state;
-	}
+	public function data(op:String, slot:Int):Void {
+		var so:SharedObject = SharedObject.getLocal("testGame" + slot);
 
-	public function load(slot:Int):Void {
-		trace('Would load from $slot');
-		return;
+		if (op == "save") {
+			so.data._char = currentChar;
+			so.data._state = state;
+			so.data._images = scene.data("save");
+		}
+
+		if (op == "load") {
+			currentChar = so.data._char;
+			state = so.data._state;
+			scene.data("load", so.data._images);
+		}
+
+		so.flush();
+		so.close();
 	}
 
 }
